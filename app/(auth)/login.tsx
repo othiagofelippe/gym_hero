@@ -11,6 +11,8 @@ export default function LoginScreen() {
 
   const handleLogin = () => {
     console.log('Login:', { email, password });
+    // Navega para o app (tabs)
+    router.replace('/(tabs)');
   };
 
   return (

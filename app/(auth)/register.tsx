@@ -1,20 +1,20 @@
-import { useState } from 'react';
-import { VStack } from '@/components/ui/vstack';
-import { Text } from '@/components/ui/text';
-import { Input, InputField } from '@/components/ui/input';
-import { Button, ButtonText } from '@/components/ui/button';
-import { router } from 'expo-router';
+import { Button, ButtonText } from "@/components/ui/button";
+import { Input, InputField } from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
+import { router } from "expo-router";
+import { useState } from "react";
 
 export default function RegisterScreen() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleRegister = () => {
-    console.log('Register:', { name, email, password, confirmPassword });
+    console.log("Register:", { name, email, password, confirmPassword });
     // Aqui criaria a conta
-    router.push('/verify-email');
+    router.push("/verify-email");
   };
 
   return (
@@ -90,7 +90,7 @@ export default function RegisterScreen() {
           <ButtonText>Cadastrar</ButtonText>
         </Button>
 
-        <Button variant="link" onPress={() => router.push('/login')}>
+        <Button variant="link" onPress={() => router.push("/login")}>
           <ButtonText>Já tem conta? Faça login</ButtonText>
         </Button>
       </VStack>
