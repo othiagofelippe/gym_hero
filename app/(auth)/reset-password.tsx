@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { VStack } from '@/components/ui/vstack';
 import { Text } from '@/components/ui/text';
-import { Input, InputField } from '@/components/ui/input';
+import { Input, InputField, InputSlot, InputIcon } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
 import { router } from 'expo-router';
+import { Lock, LockKeyhole, Eye, EyeOff } from 'lucide-react-native';
 
 export default function ResetPasswordScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleResetPassword = () => {
     if (password !== confirmPassword) {
@@ -35,12 +38,18 @@ export default function ResetPasswordScreen() {
             Nova Senha
           </Text>
           <Input>
+            <InputSlot className="pl-3">
+              <InputIcon as={Lock} />
+            </InputSlot>
             <InputField
               placeholder="Mínimo 6 caracteres"
               value={password}
               onChangeText={setPassword}
-              type="password"
+              type={showPassword ? "text" : "password"}
             />
+            <InputSlot className="pr-3" onPress={() => setShowPassword(!showPassword)}>
+              <InputIcon as={showPassword ? Eye : EyeOff} />
+            </InputSlot>
           </Input>
         </VStack>
 
@@ -49,12 +58,18 @@ export default function ResetPasswordScreen() {
             Confirmar Nova Senha
           </Text>
           <Input>
+            <InputSlot className="pl-3">
+              <InputIcon as={LockKeyhole} />
+            </InputSlot>
             <InputField
               placeholder="Digite a senha novamente"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
             />
+            <InputSlot className="pr-3" onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+              <InputIcon as={showConfirmPassword ? Eye : EyeOff} />
+            </InputSlot>
           </Input>
         </VStack>
 

@@ -1,15 +1,18 @@
 import { Button, ButtonText } from "@/components/ui/button";
-import { Input, InputField } from "@/components/ui/input";
+import { Input, InputField, InputSlot, InputIcon } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { router } from "expo-router";
 import { useState } from "react";
+import { User, Mail, Lock, LockKeyhole, Eye, EyeOff } from 'lucide-react-native';
 
 export default function RegisterScreen() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleRegister = () => {
     console.log("Register:", { name, email, password, confirmPassword });
@@ -34,6 +37,9 @@ export default function RegisterScreen() {
             Nome
           </Text>
           <Input>
+            <InputSlot className="pl-3">
+              <InputIcon as={User} />
+            </InputSlot>
             <InputField
               placeholder="Seu nome completo"
               value={name}
@@ -48,6 +54,9 @@ export default function RegisterScreen() {
             Email
           </Text>
           <Input>
+            <InputSlot className="pl-3">
+              <InputIcon as={Mail} />
+            </InputSlot>
             <InputField
               placeholder="seu@email.com"
               value={email}
@@ -63,12 +72,18 @@ export default function RegisterScreen() {
             Senha
           </Text>
           <Input>
+            <InputSlot className="pl-3">
+              <InputIcon as={Lock} />
+            </InputSlot>
             <InputField
               placeholder="Mínimo 6 caracteres"
               value={password}
               onChangeText={setPassword}
-              type="password"
+              type={showPassword ? "text" : "password"}
             />
+            <InputSlot className="pr-3" onPress={() => setShowPassword(!showPassword)}>
+              <InputIcon as={showPassword ? Eye : EyeOff} />
+            </InputSlot>
           </Input>
         </VStack>
 
@@ -77,12 +92,18 @@ export default function RegisterScreen() {
             Confirmar Senha
           </Text>
           <Input>
+            <InputSlot className="pl-3">
+              <InputIcon as={LockKeyhole} />
+            </InputSlot>
             <InputField
               placeholder="Digite a senha novamente"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
             />
+            <InputSlot className="pr-3" onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+              <InputIcon as={showConfirmPassword ? Eye : EyeOff} />
+            </InputSlot>
           </Input>
         </VStack>
 

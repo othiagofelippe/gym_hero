@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { VStack } from '@/components/ui/vstack';
 import { Text } from '@/components/ui/text';
-import { Input, InputField } from '@/components/ui/input';
+import { Input, InputField, InputSlot, InputIcon } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
 import { router } from 'expo-router';
+import { Mail } from 'lucide-react-native';
 
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState('');
@@ -31,6 +32,9 @@ export default function ForgotPasswordScreen() {
             Email
           </Text>
           <Input>
+            <InputSlot className="pl-3">
+              <InputIcon as={Mail} />
+            </InputSlot>
             <InputField
               placeholder="seu@email.com"
               value={email}

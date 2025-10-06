@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { VStack } from '@/components/ui/vstack';
 import { Text } from '@/components/ui/text';
-import { Input, InputField } from '@/components/ui/input';
+import { Input, InputField, InputSlot, InputIcon } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
 import { router } from 'expo-router';
+import { Mail, Lock, Eye, EyeOff } from 'lucide-react-native';
+import { Pressable } from 'react-native';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = () => {
     console.log('Login:', { email, password });
@@ -32,6 +35,9 @@ export default function LoginScreen() {
             Email
           </Text>
           <Input>
+            <InputSlot className="pl-3">
+              <InputIcon as={Mail} />
+            </InputSlot>
             <InputField
               placeholder="seu@email.com"
               value={email}
@@ -47,12 +53,18 @@ export default function LoginScreen() {
             Senha
           </Text>
           <Input>
+            <InputSlot className="pl-3">
+              <InputIcon as={Lock} />
+            </InputSlot>
             <InputField
               placeholder="********"
               value={password}
               onChangeText={setPassword}
-              type="password"
+              type={showPassword ? "text" : "password"}
             />
+            <InputSlot className="pr-3" onPress={() => setShowPassword(!showPassword)}>
+              <InputIcon as={showPassword ? Eye : EyeOff} />
+            </InputSlot>
           </Input>
           <Button variant="link" onPress={() => router.push('/forgot-password')} size="xs" className="self-end">
             <ButtonText className="text-xs">Esqueci minha senha</ButtonText>

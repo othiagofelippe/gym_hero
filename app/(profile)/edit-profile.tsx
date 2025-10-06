@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { VStack } from '@/components/ui/vstack';
 import { Text } from '@/components/ui/text';
-import { Input, InputField } from '@/components/ui/input';
+import { Input, InputField, InputSlot, InputIcon } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
 import { router } from 'expo-router';
 import { View } from 'react-native';
+import { User, Calendar, Target } from 'lucide-react-native';
 
 export default function EditProfileScreen() {
   // Dados mockados - depois virá de um context/state
@@ -55,6 +56,9 @@ export default function EditProfileScreen() {
             Nome
           </Text>
           <Input>
+            <InputSlot className="pl-3">
+              <InputIcon as={User} />
+            </InputSlot>
             <InputField
               placeholder="Seu nome completo"
               value={name}
@@ -69,6 +73,9 @@ export default function EditProfileScreen() {
             Idade
           </Text>
           <Input>
+            <InputSlot className="pl-3">
+              <InputIcon as={Calendar} />
+            </InputSlot>
             <InputField
               placeholder="Sua idade"
               value={age}
@@ -83,6 +90,9 @@ export default function EditProfileScreen() {
             Meta
           </Text>
           <Input>
+            <InputSlot className="pl-3">
+              <InputIcon as={Target} />
+            </InputSlot>
             <InputField
               placeholder="Qual seu objetivo?"
               value={goal}
