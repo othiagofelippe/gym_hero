@@ -68,23 +68,37 @@ export default function OnboardingScreen() {
   const [currentStep, setCurrentStep] = useState(0);
   const fadeAnim = useRef(new Animated.Value(1)).current;
 
-  const handleContinue = () => {
+  const animateTransition = (callback: () => void) => {
     Animated.timing(fadeAnim, {
       toValue: 0,
       duration: 200,
       useNativeDriver: true,
     }).start(() => {
-      if (currentStep < ONBOARDING_STEPS.length - 1) {
-        setCurrentStep(currentStep + 1);
-      } else {
-        router.replace("/welcome");
-      }
+      callback();
 
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 300,
         useNativeDriver: true,
       }).start();
+    });
+  };
+
+  const handleNext = () => {
+    animateTransition(() => {
+      if (currentStep < ONBOARDING_STEPS.length - 1) {
+        setCurrentStep(currentStep + 1);
+      } else {
+        router.replace("/welcome");
+      }
+    });
+  };
+
+  const handleBack = () => {
+    animateTransition(() => {
+      if (currentStep > 0) {
+        setCurrentStep(currentStep - 1);
+      }
     });
   };
 
@@ -134,15 +148,29 @@ export default function OnboardingScreen() {
           })}
         </HStack>
 
-        <Button
-          onPress={handleContinue}
-          className="bg-brand"
-          size="xl"
-        >
-          <ButtonText className="text-white text-lg font-bold">
-            {isLastStep ? "Começar" : "Continuar"}
-          </ButtonText>
-        </Button>
+        <HStack space="md">
+          <Button
+            onPress={handleBack}
+            variant="outline"
+            className={`flex-1 ${currentStep === 0 ? 'opacity-40' : ''}`}
+            size="xl"
+            disabled={currentStep === 0}
+          >
+            <ButtonText className={`text-lg font-bold ${currentStep === 0 ? 'opacity-40' : ''}`}>
+              Voltar
+            </ButtonText>
+          </Button>
+
+          <Button
+            onPress={handleNext}
+            className="bg-brand flex-1"
+            size="xl"
+          >
+            <ButtonText className="text-white text-lg font-bold">
+              {isLastStep ? "Começar" : "Próximo"}
+            </ButtonText>
+          </Button>
+        </HStack>
         </VStack>
       </VStack>
     </SafeAreaView>
