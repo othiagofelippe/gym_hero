@@ -1,3 +1,49 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light mode colors */
+    --background-primary: 255 255 255;
+    --background-secondary: 245 245 245;
+    --background-tertiary: 229 229 229;
+
+    --text-headline: 18 18 20;
+    --text-heading: 32 32 36;
+    --text-body: 41 41 46;
+    --text-span: 124 124 138;
+
+    --accent-brand: 249 115 22;
+    --accent-brand-dark: 194 65 12;
+    --accent-brand-light: 251 146 60;
+    --accent-red: 247 90 104;
+    --accent-red-dark: 170 40 52;
+    --accent-blue: 90 134 247;
+    --accent-blue-dark: 40 77 170;
+
+    --border-primary: 229 229 229;
+  }
+
+  .dark {
+    /* Dark mode colors */
+    --background-primary: 18 18 20;
+    --background-secondary: 32 32 36;
+    --background-tertiary: 41 41 46;
+
+    --text-headline: 255 255 255;
+    --text-heading: 225 225 230;
+    --text-body: 196 196 204;
+    --text-span: 124 124 138;
+
+    --accent-brand: 249 115 22;
+    --accent-brand-dark: 194 65 12;
+    --accent-brand-light: 251 146 60;
+    --accent-red: 247 90 104;
+    --accent-red-dark: 170 40 52;
+    --accent-blue: 90 134 247;
+    --accent-blue-dark: 40 77 170;
+
+    --border-primary: 61 61 61;
+  }
+}
