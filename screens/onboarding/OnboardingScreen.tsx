@@ -6,6 +6,7 @@ import { router } from "expo-router";
 import { useState, useEffect, useRef } from "react";
 import { Dumbbell, Flame, Trophy } from "lucide-react-native";
 import { View, Animated } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ONBOARDING_STEPS = [
   {
@@ -92,37 +93,38 @@ export default function OnboardingScreen() {
   const isLastStep = currentStep === ONBOARDING_STEPS.length - 1;
 
   return (
-    <VStack className="flex-1 bg-background-primary">
-      <Animated.View
-        style={{
-          flex: 1,
-          opacity: fadeAnim,
-        }}
-      >
-        <VStack className="flex-1 justify-center items-center px-8" space="2xl">
-          <View className="items-center justify-center">
-            <Icon size={120} color={step.color} strokeWidth={1.5} />
-          </View>
+    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+      <VStack className="flex-1 bg-background-primary">
+        <Animated.View
+          style={{
+            flex: 1,
+            opacity: fadeAnim,
+          }}
+        >
+          <VStack className="flex-1 justify-center items-center px-8" space="2xl">
+            <View className="items-center justify-center">
+              <Icon size={120} color={step.color} strokeWidth={1.5} />
+            </View>
 
-          <VStack space="md" className="items-center">
-            <Text
-              size="3xl"
-              bold
-              className="text-text-headline text-center"
-            >
-              {step.title}
-            </Text>
-            <Text
-              size="lg"
-              className="text-text-body text-center leading-relaxed"
-            >
-              {step.description}
-            </Text>
+            <VStack space="md" className="items-center">
+              <Text
+                size="3xl"
+                bold
+                className="text-text-headline text-center"
+              >
+                {step.title}
+              </Text>
+              <Text
+                size="lg"
+                className="text-text-body text-center leading-relaxed"
+              >
+                {step.description}
+              </Text>
+            </VStack>
           </VStack>
-        </VStack>
-      </Animated.View>
+        </Animated.View>
 
-      <VStack space="xl" className="px-6 pb-12">
+        <VStack space="xl" className="px-6 pb-12">
         <HStack space="sm" className="justify-center">
           {ONBOARDING_STEPS.map((_, index) => {
             const isActive = index === currentStep;
@@ -141,7 +143,8 @@ export default function OnboardingScreen() {
             {isLastStep ? "Começar" : "Continuar"}
           </ButtonText>
         </Button>
+        </VStack>
       </VStack>
-    </VStack>
+    </SafeAreaView>
   );
 }

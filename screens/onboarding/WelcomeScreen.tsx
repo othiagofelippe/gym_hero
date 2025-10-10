@@ -6,6 +6,7 @@ import { router } from "expo-router";
 import { View } from "react-native";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { Mail } from "lucide-react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function WelcomeScreen() {
   const handleAppleLogin = () => {
@@ -25,8 +26,9 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <VStack className="flex-1 bg-background-primary p-6 justify-between">
-      <VStack className="flex-1 justify-center items-center" space="md">
+    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+      <VStack className="flex-1 bg-background-primary p-6 justify-between">
+        <VStack className="flex-1 justify-center items-center" space="md">
         <Text size="4xl" bold className="text-text-headline">
           Gym Hero
         </Text>
@@ -113,7 +115,8 @@ export default function WelcomeScreen() {
             </ButtonText>
           </Button>
         </HStack>
+        </VStack>
       </VStack>
-    </VStack>
+    </SafeAreaView>
   );
 }
