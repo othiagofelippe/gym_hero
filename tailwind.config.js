@@ -2,12 +2,7 @@
 module.exports = {
   darkMode: process.env.DARK_MODE ? process.env.DARK_MODE : "class",
   content: [
-    "./app/**/*.{html,js,jsx,ts,tsx,mdx}",
-    "./components/**/*.{html,js,jsx,ts,tsx,mdx}",
-    "./utils/**/*.{html,js,jsx,ts,tsx,mdx}",
-    "./*.{html,js,jsx,tnpm s,tsx,mdx}",
-    "./src/**/*.{html,js,jsx,ts,tsx,mdx}",
-    "./screens/**/*.{html,js,jsx,ts,tsx,mdx}",
+    "./src/**/*.{js,jsx,ts,tsx}",
   ],
   presets: [require("nativewind/preset")],
   important: "html",
@@ -19,10 +14,10 @@ module.exports = {
   ],
   theme: {
     colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      white: '#FFFFFF',
-      black: '#000000',
+      transparent: "transparent",
+      current: "currentColor",
+      white: "#FFFFFF",
+      black: "#000000",
       background: {
         primary: "rgb(var(--background-primary) / <alpha-value>)",
         secondary: "rgb(var(--background-secondary) / <alpha-value>)",
