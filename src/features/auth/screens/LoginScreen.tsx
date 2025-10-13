@@ -1,24 +1,20 @@
+import {
+  loginSchema,
+  type LoginFormData,
+} from "@/features/auth/schemas/login.schema";
 import { BackButton } from "@/shared/components/BackButton";
+import { FormField } from "@/shared/components/form";
 import { Button, ButtonText } from "@/shared/components/ui/button";
-import { Input, InputField, InputIcon, InputSlot } from "@/shared/components/ui/input";
 import { Text } from "@/shared/components/ui/text";
 import { VStack } from "@/shared/components/ui/vstack";
-import { loginSchema, type LoginFormData } from "@/features/auth/schemas/login.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react-native";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Lock, Mail } from "lucide-react-native";
+import { useForm } from "react-hook-form";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginScreen() {
-  const [showPassword, setShowPassword] = useState(false);
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormData>({
+  const { control, handleSubmit } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -50,84 +46,25 @@ export default function LoginScreen() {
         </VStack>
 
         <VStack space="lg" className="mt-4">
-          <VStack space="sm">
-            <Text size="sm" bold className="text-text-heading">
-              Email
-            </Text>
-            <Controller
-              control={control}
-              name="email"
-              render={({ field }) => (
-                <Input
-                  className={
-                    errors.email
-                      ? "border-red"
-                      : "border-border-primary bg-background-secondary"
-                  }
-                >
-                  <InputSlot className="pl-3">
-                    <InputIcon as={Mail} className="text-text-span" />
-                  </InputSlot>
-                  <InputField
-                    placeholder="seu@email.com"
-                    {...field}
-                    onChangeText={field.onChange}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    className="text-text-body"
-                  />
-                </Input>
-              )}
-            />
-            {errors.email && (
-              <Text size="xs" className="text-red">
-                {errors.email.message}
-              </Text>
-            )}
-          </VStack>
+          <FormField
+            control={control}
+            name="email"
+            label="Email"
+            placeholder="seu@email.com"
+            icon={Mail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
 
           <VStack space="sm">
-            <Text size="sm" bold className="text-text-heading">
-              Senha
-            </Text>
-            <Controller
+            <FormField
               control={control}
               name="password"
-              render={({ field }) => (
-                <Input
-                  className={
-                    errors.password
-                      ? "border-red"
-                      : "border-border-primary bg-background-secondary"
-                  }
-                >
-                  <InputSlot className="pl-3">
-                    <InputIcon as={Lock} className="text-text-span" />
-                  </InputSlot>
-                  <InputField
-                    placeholder="********"
-                    {...field}
-                    onChangeText={field.onChange}
-                    type={showPassword ? "text" : "password"}
-                    className="text-text-body"
-                  />
-                  <InputSlot
-                    className="pr-3"
-                    onPress={() => setShowPassword(!showPassword)}
-                  >
-                    <InputIcon
-                      as={showPassword ? Eye : EyeOff}
-                      className="text-text-span"
-                    />
-                  </InputSlot>
-                </Input>
-              )}
+              label="Senha"
+              placeholder="********"
+              icon={Lock}
+              secureTextEntry
             />
-            {errors.password && (
-              <Text size="xs" className="text-red">
-                {errors.password.message}
-              </Text>
-            )}
             <Button
               variant="link"
               onPress={() => router.push("/forgot-password")}
