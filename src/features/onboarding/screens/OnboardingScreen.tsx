@@ -3,42 +3,11 @@ import { HStack } from "@/shared/components/ui/hstack";
 import { Text } from "@/shared/components/ui/text";
 import { VStack } from "@/shared/components/ui/vstack";
 import { router } from "expo-router";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Animated, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ONBOARDING_STEPS } from "../constants";
-
-function DotIndicator({ isActive }: { isActive: boolean }) {
-  const widthAnim = useRef(new Animated.Value(isActive ? 32 : 8)).current;
-  const opacityAnim = useRef(new Animated.Value(isActive ? 1 : 0.3)).current;
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(widthAnim, {
-        toValue: isActive ? 32 : 8,
-        duration: 300,
-        useNativeDriver: false,
-      }),
-      Animated.timing(opacityAnim, {
-        toValue: isActive ? 1 : 0.3,
-        duration: 300,
-        useNativeDriver: false,
-      }),
-    ]).start();
-  }, [isActive]);
-
-  return (
-    <Animated.View
-      style={{
-        width: widthAnim,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: isActive ? "rgb(249, 115, 22)" : "rgb(229, 229, 229)",
-        opacity: opacityAnim,
-      }}
-    />
-  );
-}
+import { DotIndicator } from "../components";
 
 export default function OnboardingScreen() {
   const [currentStep, setCurrentStep] = useState(0);

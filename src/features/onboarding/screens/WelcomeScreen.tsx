@@ -4,9 +4,8 @@ import { Text } from "@/shared/components/ui/text";
 import { Button, ButtonText } from "@/shared/components/ui/button";
 import { router } from "expo-router";
 import { View } from "react-native";
-import { AntDesign, FontAwesome } from "@expo/vector-icons";
-import { Mail } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { SocialButton } from "../components/SocialButton";
 
 export default function WelcomeScreen() {
   const handleAppleLogin = () => {
@@ -39,45 +38,32 @@ export default function WelcomeScreen() {
 
       <VStack space="lg" className="pb-12">
         <VStack space="md">
-          <Button
+          <SocialButton
+            provider="apple"
+            label="Continuar com Apple"
             onPress={handleAppleLogin}
-            className="bg-black border-0"
-            size="xl"
-          >
-            <HStack space="sm" className="items-center">
-              <FontAwesome name="apple" size={20} color="#FFFFFF" />
-              <ButtonText className="text-white text-base font-semibold">
-                Continuar com Apple
-              </ButtonText>
-            </HStack>
-          </Button>
+            backgroundColor="bg-black"
+            textColor="text-white"
+            iconColor="#FFFFFF"
+          />
 
-          <Button
+          <SocialButton
+            provider="google"
+            label="Continuar com Google"
             onPress={handleGoogleLogin}
-            variant="outline"
-            className="border-border-primary bg-background-secondary"
-            size="xl"
-          >
-            <HStack space="sm" className="items-center">
-              <AntDesign name="google" size={20} color="#DB4437" />
-              <ButtonText className="text-text-heading text-base font-semibold">
-                Continuar com Google
-              </ButtonText>
-            </HStack>
-          </Button>
+            backgroundColor="bg-background-secondary border-2 border-border-primary"
+            textColor="text-text-heading"
+            iconColor="#DB4437"
+          />
 
-          <Button
+          <SocialButton
+            provider="facebook"
+            label="Continuar com Facebook"
             onPress={handleFacebookLogin}
-            className="bg-[#1877F2] border-0"
-            size="xl"
-          >
-            <HStack space="sm" className="items-center">
-              <FontAwesome name="facebook" size={20} color="#FFFFFF" />
-              <ButtonText className="text-white text-base font-semibold">
-                Continuar com Facebook
-              </ButtonText>
-            </HStack>
-          </Button>
+            backgroundColor="bg-[#1877F2]"
+            textColor="text-white"
+            iconColor="#FFFFFF"
+          />
         </VStack>
 
         <HStack space="md" className="items-center">
@@ -88,18 +74,14 @@ export default function WelcomeScreen() {
           <View className="flex-1 h-[1px] bg-border-primary" />
         </HStack>
 
-        <Button
+        <SocialButton
+          provider="mail"
+          label="Continuar com Email"
           onPress={handleEmailLogin}
-          className="bg-brand border-0"
-          size="xl"
-        >
-          <HStack space="sm" className="items-center">
-            <Mail size={20} color="#FFFFFF" />
-            <ButtonText className="text-white text-base font-semibold">
-              Continuar com Email
-            </ButtonText>
-          </HStack>
-        </Button>
+          backgroundColor="bg-brand"
+          textColor="text-white"
+          iconColor="#FFFFFF"
+        />
 
         <HStack space="xs" className="justify-center items-center">
           <Text size="sm" className="text-text-body">
