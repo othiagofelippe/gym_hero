@@ -34,7 +34,7 @@ export default function OnboardingScreen() {
       if (currentStep < ONBOARDING_STEPS.length - 1) {
         setCurrentStep(currentStep + 1);
       } else {
-        router.replace("/welcome");
+        router.replace("/(onboarding)/welcome");
       }
     });
   };

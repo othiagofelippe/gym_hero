@@ -6,22 +6,32 @@ import { router } from "expo-router";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SocialButton } from "../components/SocialButton";
+import { setOnboardingCompleted } from "../services/onboardingStorage";
 
 export default function WelcomeScreen() {
-  const handleAppleLogin = () => {
+  const handleAppleLogin = async () => {
+    await setOnboardingCompleted();
     console.log("Apple login");
   };
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
+    await setOnboardingCompleted();
     console.log("Google login");
   };
 
-  const handleFacebookLogin = () => {
+  const handleFacebookLogin = async () => {
+    await setOnboardingCompleted();
     console.log("Facebook login");
   };
 
-  const handleEmailLogin = () => {
+  const handleEmailLogin = async () => {
+    await setOnboardingCompleted();
     router.push("/login");
+  };
+
+  const handleRegister = async () => {
+    await setOnboardingCompleted();
+    router.push("/register");
   };
 
   return (
@@ -89,7 +99,7 @@ export default function WelcomeScreen() {
           </Text>
           <Button
             variant="link"
-            onPress={() => router.push("/register")}
+            onPress={handleRegister}
             size="sm"
           >
             <ButtonText className="text-brand font-bold">
