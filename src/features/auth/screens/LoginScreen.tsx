@@ -2,6 +2,7 @@ import {
   loginSchema,
   type LoginFormData,
 } from "@/features/auth/schemas/login.schema";
+import { loginUser } from "@/features/auth/services/authService";
 import { BackButton } from "@/shared/components/BackButton";
 import { FormField } from "@/shared/components/form";
 import { Button, ButtonText } from "@/shared/components/ui/button";
@@ -10,10 +11,14 @@ import { VStack } from "@/shared/components/ui/vstack";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { Lock, Mail } from "lucide-react-native";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginScreen() {
+  const [loading, setLoading] = useState(false);
+
   const { control, handleSubmit } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -22,10 +27,25 @@ export default function LoginScreen() {
     },
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log("Login:", data);
-    // Navega para o app (tabs)
-    router.replace("/(tabs)");
+  const onSubmit = async (data: LoginFormData) => {
+    setLoading(true);
+
+    try {
+      const { user, error } = await loginUser(data.email, data.password);
+
+      if (error) {
+        Alert.alert("Erro ao fazer login", error.message);
+        return;
+      }
+
+      if (user) {
+        router.replace("/(tabs)");
+      }
+    } catch (err) {
+      Alert.alert("Erro", "Ocorreu um erro inesperado. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -77,8 +97,14 @@ export default function LoginScreen() {
             </Button>
           </VStack>
 
-          <Button onPress={handleSubmit(onSubmit)} className="mt-2 bg-brand">
-            <ButtonText className="text-white">Entrar</ButtonText>
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            className="mt-2 bg-brand"
+            disabled={loading}
+          >
+            <ButtonText className="text-white">
+              {loading ? "Entrando..." : "Entrar"}
+            </ButtonText>
           </Button>
 
           <Button variant="link" onPress={() => router.push("/register")}>

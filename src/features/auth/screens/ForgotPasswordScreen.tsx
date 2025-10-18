@@ -10,9 +10,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { Mail } from "lucide-react-native";
 import { useForm } from "react-hook-form";
+import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { resetPassword } from "@/features/auth/services/authService";
+import { useState } from "react";
 
 export default function ForgotPasswordScreen() {
+  const [loading, setLoading] = useState(false);
+
   const { control, handleSubmit } = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -20,10 +25,32 @@ export default function ForgotPasswordScreen() {
     },
   });
 
-  const onSubmit = (data: ForgotPasswordFormData) => {
-    console.log("Reset password for:", data.email);
-    // Aqui enviaria o email de recuperação
-    router.push("/forgot-password-success");
+  const onSubmit = async (data: ForgotPasswordFormData) => {
+    setLoading(true);
+    try {
+      const { error } = await resetPassword(data.email);
+
+      if (error) {
+        Alert.alert("Erro ao enviar email", error.message);
+        return;
+      }
+
+      // Sucesso - mostra mensagem e redireciona
+      Alert.alert(
+        "Email enviado!",
+        `Enviamos as instruções de recuperação para ${data.email}. Verifique sua caixa de entrada.`,
+        [
+          {
+            text: "OK",
+            onPress: () => router.replace("/login"),
+          },
+        ]
+      );
+    } catch (err) {
+      Alert.alert("Erro", "Ocorreu um erro inesperado. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -52,8 +79,14 @@ export default function ForgotPasswordScreen() {
             autoCapitalize="none"
           />
 
-          <Button onPress={handleSubmit(onSubmit)} className="mt-2 bg-brand">
-            <ButtonText className="text-white">Enviar Instruções</ButtonText>
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            className="mt-2 bg-brand"
+            disabled={loading}
+          >
+            <ButtonText className="text-white">
+              {loading ? "Enviando..." : "Enviar Instruções"}
+            </ButtonText>
           </Button>
 
           <Button variant="link" onPress={() => router.back()}>

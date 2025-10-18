@@ -2,6 +2,7 @@ import {
   registerSchema,
   type RegisterFormData,
 } from "@/features/auth/schemas/register.schema";
+import { registerUser } from "@/features/auth/services/authService";
 import { BackButton } from "@/shared/components/BackButton";
 import { FormField } from "@/shared/components/form";
 import { Button, ButtonText } from "@/shared/components/ui/button";
@@ -10,10 +11,14 @@ import { VStack } from "@/shared/components/ui/vstack";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { Lock, LockKeyhole, Mail, User } from "lucide-react-native";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RegisterScreen() {
+  const [loading, setLoading] = useState(false);
+
   const { control, handleSubmit } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -24,10 +29,34 @@ export default function RegisterScreen() {
     },
   });
 
-  const onSubmit = (data: RegisterFormData) => {
-    console.log("Register:", data);
-    // Aqui criaria a conta
-    router.push("/verify-email");
+  const onSubmit = async (data: RegisterFormData) => {
+    setLoading(true);
+
+    try {
+      const { user, error } = await registerUser(
+        data.email,
+        data.password,
+        data.name
+      );
+
+      if (error) {
+        Alert.alert("Erro ao criar conta", error.message);
+        return;
+      }
+
+      if (user) {
+        Alert.alert("Conta criada!", "Sua conta foi criada com sucesso.", [
+          {
+            text: "OK",
+            onPress: () => router.replace("/(tabs)"),
+          },
+        ]);
+      }
+    } catch (err) {
+      Alert.alert("Erro", "Ocorreu um erro inesperado. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -85,8 +114,14 @@ export default function RegisterScreen() {
             secureTextEntry
           />
 
-          <Button onPress={handleSubmit(onSubmit)} className="mt-2 bg-brand">
-            <ButtonText className="text-white">Cadastrar</ButtonText>
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            className="mt-2 bg-brand"
+            disabled={loading}
+          >
+            <ButtonText className="text-white">
+              {loading ? "Cadastrando..." : "Cadastrar"}
+            </ButtonText>
           </Button>
 
           <Button variant="link" onPress={() => router.push("/login")}>
