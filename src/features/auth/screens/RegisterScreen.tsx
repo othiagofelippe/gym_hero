@@ -8,16 +8,17 @@ import { FormField } from "@/shared/components/form";
 import { Button, ButtonText } from "@/shared/components/ui/button";
 import { Text } from "@/shared/components/ui/text";
 import { VStack } from "@/shared/components/ui/vstack";
+import { useToast } from "@/shared/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { Lock, LockKeyhole, Mail, User } from "lucide-react-native";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RegisterScreen() {
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const { control, handleSubmit } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -40,20 +41,16 @@ export default function RegisterScreen() {
       );
 
       if (error) {
-        Alert.alert("Erro ao criar conta", error.message);
+        toast.error("Erro ao criar conta", error.message);
         return;
       }
 
       if (user) {
-        Alert.alert("Conta criada!", "Sua conta foi criada com sucesso.", [
-          {
-            text: "OK",
-            onPress: () => router.replace("/(tabs)"),
-          },
-        ]);
+        toast.success("Conta criada!", "Sua conta foi criada com sucesso.");
+        router.replace("/(tabs)");
       }
     } catch (err) {
-      Alert.alert("Erro", "Ocorreu um erro inesperado. Tente novamente.");
+      toast.error("Erro", "Ocorreu um erro inesperado. Tente novamente.");
     } finally {
       setLoading(false);
     }

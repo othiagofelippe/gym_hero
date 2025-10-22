@@ -13,11 +13,12 @@ import { router } from "expo-router";
 import { Lock, Mail } from "lucide-react-native";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useToast } from "@/shared/hooks";
 
 export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const { control, handleSubmit } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -34,15 +35,16 @@ export default function LoginScreen() {
       const { user, error } = await loginUser(data.email, data.password);
 
       if (error) {
-        Alert.alert("Erro ao fazer login", error.message);
+        toast.error("Erro ao fazer login", error.message);
         return;
       }
 
       if (user) {
+        toast.success("Login realizado!", "Bem-vindo de volta!");
         router.replace("/(tabs)");
       }
     } catch (err) {
-      Alert.alert("Erro", "Ocorreu um erro inesperado. Tente novamente.");
+      toast.error("Erro", "Ocorreu um erro inesperado. Tente novamente.");
     } finally {
       setLoading(false);
     }

@@ -10,13 +10,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { Mail } from "lucide-react-native";
 import { useForm } from "react-hook-form";
-import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { resetPassword } from "@/features/auth/services/authService";
 import { useState } from "react";
+import { useToast } from "@/shared/hooks";
 
 export default function ForgotPasswordScreen() {
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const { control, handleSubmit } = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -31,23 +32,17 @@ export default function ForgotPasswordScreen() {
       const { error } = await resetPassword(data.email);
 
       if (error) {
-        Alert.alert("Erro ao enviar email", error.message);
+        toast.error("Erro ao enviar email", error.message);
         return;
       }
 
-      // Sucesso - mostra mensagem e redireciona
-      Alert.alert(
+      toast.success(
         "Email enviado!",
-        `Enviamos as instruções de recuperação para ${data.email}. Verifique sua caixa de entrada.`,
-        [
-          {
-            text: "OK",
-            onPress: () => router.replace("/login"),
-          },
-        ]
+        `Enviamos as instruções de recuperação para ${data.email}. Verifique sua caixa de entrada.`
       );
+      router.replace("/login");
     } catch (err) {
-      Alert.alert("Erro", "Ocorreu um erro inesperado. Tente novamente.");
+      toast.error("Erro", "Ocorreu um erro inesperado. Tente novamente.");
     } finally {
       setLoading(false);
     }
