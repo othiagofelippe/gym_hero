@@ -3,7 +3,8 @@ import { Button, ButtonText } from "@/shared/components/ui/button";
 import { Text } from "@/shared/components/ui/text";
 import { VStack } from "@/shared/components/ui/vstack";
 import { MuscleGroupCard } from "@/features/workout/components";
-import { MUSCLE_GROUPS } from "@/features/workout/constants";
+import { useMuscleGroups } from "@/features/workout/hooks";
+import { LoadingState } from "@/shared/components/LoadingState";
 import { router } from "expo-router";
 import { Dumbbell } from "lucide-react-native";
 import { useState } from "react";
@@ -12,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function CreateWorkoutScreen() {
   const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
+  const { muscleGroups, isLoading } = useMuscleGroups();
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
@@ -31,25 +33,32 @@ export default function CreateWorkoutScreen() {
         </VStack>
 
         <ScrollView className="flex-1 px-6">
-          <View
-            style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              gap: 16,
-              paddingBottom: 24,
-            }}
-          >
-            {MUSCLE_GROUPS.map((group) => (
-              <MuscleGroupCard
-                key={group.id}
-                id={group.id}
-                name={group.name}
-                icon={group.icon}
-                isSelected={selectedGroup === group.id}
-                onSelect={setSelectedGroup}
-              />
-            ))}
-          </View>
+          {isLoading ? (
+            <LoadingState
+              icon={Dumbbell}
+              message="Carregando grupos musculares..."
+            />
+          ) : (
+            <View
+              style={{
+                flexDirection: "row",
+                flexWrap: "wrap",
+                gap: 16,
+                paddingBottom: 24,
+              }}
+            >
+              {muscleGroups.map((group) => (
+                <MuscleGroupCard
+                  key={group.id}
+                  id={group.id}
+                  name={group.name}
+                  imageUrl={group.imageUrl}
+                  isSelected={selectedGroup === group.id}
+                  onSelect={setSelectedGroup}
+                />
+              ))}
+            </View>
+          )}
         </ScrollView>
 
         {selectedGroup && (

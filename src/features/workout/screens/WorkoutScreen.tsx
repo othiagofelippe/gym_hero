@@ -1,5 +1,6 @@
 import { WorkoutCard, WorkoutMenuActionsheet } from "@/features/workout/components";
 import { useWorkouts } from "@/features/workout/hooks";
+import { LoadingState } from "@/shared/components/LoadingState";
 import { Button, ButtonText } from "@/shared/components/ui/button";
 import { Text } from "@/shared/components/ui/text";
 import { VStack } from "@/shared/components/ui/vstack";
@@ -24,8 +25,8 @@ export default function WorkoutScreen() {
   if (isLoading) {
     return (
       <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
-        <VStack className="flex-1 bg-background-primary justify-center items-center">
-          <Text className="text-text-body">Carregando...</Text>
+        <VStack className="flex-1 bg-background-primary">
+          <LoadingState icon={Dumbbell} message="Carregando seus treinos..." />
         </VStack>
       </SafeAreaView>
     );

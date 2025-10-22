@@ -17,8 +17,5 @@ export interface Workout {
   timesCompleted: number;
 }
 
-export interface MuscleGroup {
-  id: string;
-  name: string;
-  icon: string;
-}
+// Re-export MuscleGroup from service
+export type { MuscleGroup } from '../services/muscleGroupService';

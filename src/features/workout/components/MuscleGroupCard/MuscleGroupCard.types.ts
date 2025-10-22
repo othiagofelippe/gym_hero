@@ -1,7 +1,7 @@
 export interface MuscleGroupCardProps {
   id: string;
   name: string;
-  icon: string;
+  imageUrl: string;
   isSelected: boolean;
   onSelect: (id: string) => void;
 }

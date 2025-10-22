@@ -3,9 +3,9 @@ import { HStack } from "@/shared/components/ui/hstack";
 import { Text } from "@/shared/components/ui/text";
 import { VStack } from "@/shared/components/ui/vstack";
 import { Clock, MoreVertical, Play } from "lucide-react-native";
-import { TouchableOpacity } from "react-native";
-import { MUSCLE_GROUP_EMOJIS } from "../../constants";
+import { TouchableOpacity, Image } from "react-native";
 import { formatLastPerformed, calculateEstimatedTime } from "../../utils";
+import { useMuscleGroups } from "../../hooks";
 import type { WorkoutCardProps } from "./WorkoutCard.types";
 
 export function WorkoutCard({
@@ -13,7 +13,8 @@ export function WorkoutCard({
   onStart,
   onMenuPress,
 }: WorkoutCardProps) {
-  const emoji = MUSCLE_GROUP_EMOJIS[workout.muscleGroup] || "💪";
+  const { getMuscleGroupById } = useMuscleGroups();
+  const muscleGroup = getMuscleGroupById(workout.muscleGroup);
   const estimatedTime = calculateEstimatedTime(workout.exercises);
 
   return (
@@ -22,9 +23,17 @@ export function WorkoutCard({
       space="md"
     >
       <VStack space="sm">
-        <Text size="2xl" bold className="text-text-headline">
-          {emoji} {workout.name}
-        </Text>
+        <HStack space="sm" className="items-center">
+          {muscleGroup?.imageUrl && (
+            <Image
+              source={{ uri: muscleGroup.imageUrl }}
+              style={{ width: 32, height: 32, resizeMode: "contain" }}
+            />
+          )}
+          <Text size="2xl" bold className="text-text-headline flex-1">
+            {workout.name}
+          </Text>
+        </HStack>
 
         <VStack space="xs">
           <Text size="sm" className="text-text-body">

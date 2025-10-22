@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { router } from "expo-router";
-import { EXERCISES_BY_GROUP, MUSCLE_GROUP_NAMES } from "../constants";
+import { useExercises } from "./useExercises";
+import { useMuscleGroups } from "./useMuscleGroups";
 
 export function useExerciseSelection(muscleGroup: string) {
   const [selectedExercises, setSelectedExercises] = useState<string[]>([]);
 
-  const exercises = EXERCISES_BY_GROUP[muscleGroup] || [];
-  const groupName = MUSCLE_GROUP_NAMES[muscleGroup] || muscleGroup;
+  const { exercises, isLoading: isLoadingExercises } = useExercises({ muscleGroupId: muscleGroup });
+  const { getMuscleGroupName, isLoading: isLoadingGroups } = useMuscleGroups();
+
+  const groupName = getMuscleGroupName(muscleGroup);
+  const isLoading = isLoadingExercises || isLoadingGroups;
 
   const toggleExercise = (exerciseId: string) => {
     setSelectedExercises((prev) =>
@@ -37,6 +41,7 @@ export function useExerciseSelection(muscleGroup: string) {
     selectedExercises,
     exercises,
     groupName,
+    isLoading,
     toggleExercise,
     handleNext,
   };

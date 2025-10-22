@@ -2,10 +2,9 @@ import { HStack } from '@/shared/components/ui/hstack';
 import { VStack } from '@/shared/components/ui/vstack';
 import { Text } from '@/shared/components/ui/text';
 import { CheckCircle2 } from 'lucide-react-native';
-import { useState } from 'react';
 
 interface WeeklyCheckInProps {
-  checkedDays?: number[]; // Array com os dias da semana que foram marcados (0-6, sendo 0 = domingo)
+  checkedDays?: number[];
 }
 
 const DAYS = [

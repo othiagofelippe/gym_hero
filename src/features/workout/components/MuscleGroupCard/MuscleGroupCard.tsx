@@ -1,12 +1,12 @@
 import { Text } from "@/shared/components/ui/text";
 import { VStack } from "@/shared/components/ui/vstack";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Image } from "react-native";
 import type { MuscleGroupCardProps } from "./MuscleGroupCard.types";
 
 export function MuscleGroupCard({
   id,
   name,
-  icon,
+  imageUrl,
   isSelected,
   onSelect,
 }: MuscleGroupCardProps) {
@@ -27,11 +27,18 @@ export function MuscleGroupCard({
         }`}
         space="sm"
       >
-        <Text size="4xl">{icon}</Text>
+        <Image
+          source={{ uri: imageUrl }}
+          style={{
+            width: 80,
+            height: 80,
+            resizeMode: "contain",
+          }}
+        />
         <Text
           size="md"
           bold
-          className={`text-center ${
+          className={`text-center px-2 ${
             isSelected ? "text-brand" : "text-text-headline"
           }`}
         >

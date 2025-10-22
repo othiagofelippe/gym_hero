@@ -1,156 +1,115 @@
-import { VStack } from '@/shared/components/ui/vstack';
-import { Text } from '@/shared/components/ui/text';
-import { Input, InputField, InputSlot, InputIcon } from '@/shared/components/ui/input';
-import { Button, ButtonText } from '@/shared/components/ui/button';
-import { router } from 'expo-router';
-import { View } from 'react-native';
-import { User, Calendar, Target } from 'lucide-react-native';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { editProfileSchema, type EditProfileFormData } from '@/features/profile/schemas/edit-profile.schema';
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import {
+  editProfileSchema,
+  type EditProfileFormData,
+} from "@/features/profile/schemas/edit-profile.schema";
+import { BackButton } from "@/shared/components/BackButton";
+import { FormField } from "@/shared/components/form";
+import { Button, ButtonText } from "@/shared/components/ui/button";
+import { Text } from "@/shared/components/ui/text";
+import { VStack } from "@/shared/components/ui/vstack";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Calendar, Camera, Target, User } from "lucide-react-native";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { ScrollView, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function EditProfileScreen() {
-  const {
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<EditProfileFormData>({
+  const { user } = useAuth();
+  const [loading] = useState(false);
+
+  const { control, handleSubmit, watch } = useForm<EditProfileFormData>({
     resolver: zodResolver(editProfileSchema),
     defaultValues: {
-      name: 'João Silva',
-      age: '25',
-      goal: 'Ganhar massa muscular',
+      name: user?.displayName || "",
+      age: "",
+      goal: "",
     },
   });
 
-  const name = watch('name');
+  const name = watch("name");
 
-  const onSubmit = (data: EditProfileFormData) => {
-    console.log('Save profile:', data);
-    // Aqui salvaria os dados
-    router.back();
+  const onSubmit = async () => {
   };
 
   const handleChangeAvatar = () => {
-    console.log('Change avatar');
-    // Aqui abriria o seletor de imagem
+    console.log("Change avatar");
   };
 
   return (
-    <VStack className="flex-1 p-6" space="xl">
-      {/* Header com botão voltar */}
-      <VStack space="md" className="pt-4">
-        <Button variant="link" onPress={() => router.back()} className="self-start">
-          <ButtonText>← Voltar</ButtonText>
-        </Button>
-
-        <Text size="2xl" bold>
-          Editar Perfil
-        </Text>
-      </VStack>
-
-      {/* Avatar */}
-      <VStack space="md" className="items-center">
-        <View className="w-24 h-24 rounded-full bg-gray-700 items-center justify-center">
-          <Text size="3xl" bold>
-            {name?.charAt(0) || 'J'}
-          </Text>
-        </View>
-        <Button variant="link" onPress={handleChangeAvatar} size="sm">
-          <ButtonText>Alterar foto</ButtonText>
-        </Button>
-      </VStack>
-
-      {/* Formulário */}
-      <VStack space="lg">
-        <VStack space="sm">
-          <Text size="sm" bold>
-            Nome
-          </Text>
-          <Controller
-            control={control}
-            name="name"
-            render={({ field }) => (
-              <Input className={errors.name ? 'border-red-500' : ''}>
-                <InputSlot className="pl-3">
-                  <InputIcon as={User} />
-                </InputSlot>
-                <InputField
-                  placeholder="Seu nome completo"
-                  {...field}
-                  onChangeText={field.onChange}
-                  autoCapitalize="words"
-                />
-              </Input>
-            )}
-          />
-          {errors.name && (
-            <Text size="xs" className="text-red-500">
-              {errors.name.message}
+    <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+      <VStack className="flex-1 bg-background-primary p-6" space="xl">
+        <VStack space="md">
+          <BackButton />
+          <VStack space="xs">
+            <Text size="3xl" bold className="text-text-headline">
+              Editar Perfil
             </Text>
-          )}
+            <Text size="md" className="text-text-body">
+              Atualize suas informações pessoais
+            </Text>
+          </VStack>
         </VStack>
 
-        <VStack space="sm">
-          <Text size="sm" bold>
-            Idade
-          </Text>
-          <Controller
-            control={control}
-            name="age"
-            render={({ field }) => (
-              <Input className={errors.age ? 'border-red-500' : ''}>
-                <InputSlot className="pl-3">
-                  <InputIcon as={Calendar} />
-                </InputSlot>
-                <InputField
-                  placeholder="Sua idade"
-                  {...field}
-                  onChangeText={field.onChange}
-                  keyboardType="number-pad"
-                />
-              </Input>
-            )}
-          />
-          {errors.age && (
-            <Text size="xs" className="text-red-500">
-              {errors.age.message}
-            </Text>
-          )}
-        </VStack>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <VStack space="xl" className="pb-6">
+            <VStack space="lg" className="items-center">
+              <View className="w-28 h-28 rounded-full bg-brand/10 border-2 border-brand items-center justify-center">
+                <Text size="4xl" bold className="text-brand">
+                  {name?.charAt(0)?.toUpperCase() || "U"}
+                </Text>
+              </View>
 
-        <VStack space="sm">
-          <Text size="sm" bold>
-            Meta
-          </Text>
-          <Controller
-            control={control}
-            name="goal"
-            render={({ field }) => (
-              <Input className={errors.goal ? 'border-red-500' : ''}>
-                <InputSlot className="pl-3">
-                  <InputIcon as={Target} />
-                </InputSlot>
-                <InputField
-                  placeholder="Qual seu objetivo?"
-                  {...field}
-                  onChangeText={field.onChange}
-                />
-              </Input>
-            )}
-          />
-          {errors.goal && (
-            <Text size="xs" className="text-red-500">
-              {errors.goal.message}
-            </Text>
-          )}
-        </VStack>
+              <Button variant="link" onPress={handleChangeAvatar}>
+                <Camera size={18} color="rgb(249, 115, 22)" />
+                <ButtonText className="text-brand ml-2">
+                  Alterar foto
+                </ButtonText>
+              </Button>
+            </VStack>
 
-        <Button onPress={handleSubmit(onSubmit)} className="mt-4">
-          <ButtonText>Salvar Alterações</ButtonText>
-        </Button>
+            <VStack space="lg">
+              <FormField
+                control={control}
+                name="name"
+                label="Nome"
+                placeholder="Seu nome completo"
+                icon={User}
+                autoCapitalize="words"
+              />
+
+              <FormField
+                control={control}
+                name="age"
+                label="Idade"
+                placeholder="Sua idade"
+                icon={Calendar}
+                keyboardType="number-pad"
+              />
+
+              <FormField
+                control={control}
+                name="goal"
+                label="Meta"
+                placeholder="Qual seu objetivo?"
+                icon={Target}
+              />
+            </VStack>
+
+            <Button
+              onPress={handleSubmit(onSubmit)}
+              className="bg-brand mt-4"
+              size="xl"
+              disabled={loading}
+            >
+              <ButtonText className="text-white text-lg">
+                {loading ? "Salvando..." : "Salvar Alterações"}
+              </ButtonText>
+            </Button>
+          </VStack>
+        </ScrollView>
       </VStack>
-    </VStack>
+    </SafeAreaView>
   );
 }
