@@ -1,3 +1,5 @@
+import { FlexMascot } from "@/shared/components/FlexMascot";
+import { SafeAreaWrapper } from "@/shared/components/SafeAreaWrapper";
 import { Button, ButtonText } from "@/shared/components/ui/button";
 import { HStack } from "@/shared/components/ui/hstack";
 import { Text } from "@/shared/components/ui/text";
@@ -5,9 +7,8 @@ import { VStack } from "@/shared/components/ui/vstack";
 import { router } from "expo-router";
 import { useRef, useState } from "react";
 import { Animated, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ONBOARDING_STEPS } from "../constants";
 import { DotIndicator } from "../components";
+import { ONBOARDING_STEPS } from "../constants";
 
 export default function OnboardingScreen() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -48,11 +49,10 @@ export default function OnboardingScreen() {
   };
 
   const step = ONBOARDING_STEPS[currentStep];
-  const Icon = step.icon;
   const isLastStep = currentStep === ONBOARDING_STEPS.length - 1;
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
+    <SafeAreaWrapper>
       <VStack className="flex-1 bg-background-primary">
         <Animated.View
           style={{
@@ -65,7 +65,7 @@ export default function OnboardingScreen() {
             space="2xl"
           >
             <View className="items-center justify-center">
-              <Icon size={120} color={step.color} strokeWidth={1.5} />
+              <FlexMascot variant={step.flexVariant} size="xlarge" />
             </View>
 
             <VStack space="md" className="items-center">
@@ -115,6 +115,6 @@ export default function OnboardingScreen() {
           </HStack>
         </VStack>
       </VStack>
-    </SafeAreaView>
+    </SafeAreaWrapper>
   );
 }

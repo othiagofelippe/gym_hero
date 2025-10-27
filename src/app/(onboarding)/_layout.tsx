@@ -1,4 +1,4 @@
-import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useAuth } from "@/features/auth/hooks";
 import { SplashScreen } from "@/shared/components/splash";
 import { Redirect, Stack } from "expo-router";
 

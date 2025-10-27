@@ -5,6 +5,7 @@ import { Button, ButtonText } from "@/shared/components/ui/button";
 import { router } from "expo-router";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { FlexMascot } from "@/shared/components/FlexMascot";
 import { SocialButton } from "../components/SocialButton";
 import { setOnboardingCompleted } from "../services/onboardingStorage";
 
@@ -37,14 +38,17 @@ export default function WelcomeScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
       <VStack className="flex-1 bg-background-primary p-6 justify-between">
-        <VStack className="flex-1 justify-center items-center" space="md">
-        <Text size="4xl" bold className="text-text-headline">
-          Gym Hero
-        </Text>
-        <Text size="md" className="text-text-body text-center">
-          Sua jornada fitness começa aqui
-        </Text>
-      </VStack>
+        <VStack className="flex-1 justify-center items-center" space="2xl">
+          <FlexMascot variant="neutral-standing" size="xlarge" />
+          <VStack space="md" className="items-center">
+            <Text size="4xl" bold className="text-text-headline">
+              Gym Hero
+            </Text>
+            <Text size="md" className="text-text-body text-center">
+              Sua jornada fitness começa aqui
+            </Text>
+          </VStack>
+        </VStack>
 
       <VStack space="lg" className="pb-12">
         <VStack space="md">
