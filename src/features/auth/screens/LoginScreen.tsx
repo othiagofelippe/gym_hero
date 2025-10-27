@@ -2,23 +2,21 @@ import {
   loginSchema,
   type LoginFormData,
 } from "@/features/auth/schemas/login.schema";
-import { loginUser } from "@/features/auth/services/authService";
+import { useLogin } from "@/features/auth/hooks";
 import { BackButton } from "@/shared/components/BackButton";
+import { SafeAreaWrapper } from "@/shared/components/SafeAreaWrapper";
 import { FormField } from "@/shared/components/form";
 import { Button, ButtonText } from "@/shared/components/ui/button";
 import { Text } from "@/shared/components/ui/text";
 import { VStack } from "@/shared/components/ui/vstack";
+import { HStack } from "@/shared/components/ui/hstack";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { Lock, Mail } from "lucide-react-native";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useToast } from "@/shared/hooks";
 
 export default function LoginScreen() {
-  const [loading, setLoading] = useState(false);
-  const toast = useToast();
+  const loginMutation = useLogin();
 
   const { control, handleSubmit } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -29,29 +27,15 @@ export default function LoginScreen() {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    setLoading(true);
+    const result = await loginMutation.mutateAsync(data);
 
-    try {
-      const { user, error } = await loginUser(data.email, data.password);
-
-      if (error) {
-        toast.error("Erro ao fazer login", error.message);
-        return;
-      }
-
-      if (user) {
-        toast.success("Login realizado!", "Bem-vindo de volta!");
-        router.replace("/(tabs)");
-      }
-    } catch (err) {
-      toast.error("Erro", "Ocorreu um erro inesperado. Tente novamente.");
-    } finally {
-      setLoading(false);
+    if (result.user) {
+      router.replace("/(tabs)");
     }
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
+    <SafeAreaWrapper>
       <VStack
         className="flex-1 justify-center p-6 bg-background-primary"
         space="xl"
@@ -102,20 +86,29 @@ export default function LoginScreen() {
           <Button
             onPress={handleSubmit(onSubmit)}
             className="mt-2 bg-brand"
-            disabled={loading}
+            disabled={loginMutation.isPending}
           >
             <ButtonText className="text-white">
-              {loading ? "Entrando..." : "Entrar"}
+              {loginMutation.isPending ? "Entrando..." : "Entrar"}
             </ButtonText>
           </Button>
 
-          <Button variant="link" onPress={() => router.push("/register")}>
-            <ButtonText className="text-text-body">
-              Não tem conta? Cadastre-se
-            </ButtonText>
-          </Button>
+          <HStack space="xs" className="justify-center items-center">
+            <Text size="sm" className="text-text-body">
+              Não tem conta?
+            </Text>
+            <Button
+              variant="link"
+              onPress={() => router.push("/register")}
+              size="sm"
+            >
+              <ButtonText className="text-brand font-bold">
+                Cadastre-se
+              </ButtonText>
+            </Button>
+          </HStack>
         </VStack>
       </VStack>
-    </SafeAreaView>
+    </SafeAreaWrapper>
   );
 }

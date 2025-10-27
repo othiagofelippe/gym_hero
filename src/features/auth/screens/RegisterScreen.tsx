@@ -2,23 +2,21 @@ import {
   registerSchema,
   type RegisterFormData,
 } from "@/features/auth/schemas/register.schema";
-import { registerUser } from "@/features/auth/services/authService";
+import { useRegister } from "@/features/auth/hooks";
 import { BackButton } from "@/shared/components/BackButton";
+import { SafeAreaWrapper } from "@/shared/components/SafeAreaWrapper";
 import { FormField } from "@/shared/components/form";
 import { Button, ButtonText } from "@/shared/components/ui/button";
 import { Text } from "@/shared/components/ui/text";
 import { VStack } from "@/shared/components/ui/vstack";
-import { useToast } from "@/shared/hooks";
+import { HStack } from "@/shared/components/ui/hstack";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { Lock, LockKeyhole, Mail, User } from "lucide-react-native";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RegisterScreen() {
-  const [loading, setLoading] = useState(false);
-  const toast = useToast();
+  const registerMutation = useRegister();
 
   const { control, handleSubmit } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -31,33 +29,22 @@ export default function RegisterScreen() {
   });
 
   const onSubmit = async (data: RegisterFormData) => {
-    setLoading(true);
+    const result = await registerMutation.mutateAsync({
+      email: data.email,
+      password: data.password,
+      name: data.name,
+    });
 
-    try {
-      const { user, error } = await registerUser(
-        data.email,
-        data.password,
-        data.name
-      );
-
-      if (error) {
-        toast.error("Erro ao criar conta", error.message);
-        return;
-      }
-
-      if (user) {
-        toast.success("Conta criada!", "Sua conta foi criada com sucesso.");
-        router.replace("/(tabs)");
-      }
-    } catch (err) {
-      toast.error("Erro", "Ocorreu um erro inesperado. Tente novamente.");
-    } finally {
-      setLoading(false);
+    if (result.user) {
+      router.push({
+        pathname: "/verify-email",
+        params: { email: data.email },
+      });
     }
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
+    <SafeAreaWrapper>
       <VStack
         className="flex-1 justify-center p-6 bg-background-primary"
         space="xl"
@@ -114,20 +101,29 @@ export default function RegisterScreen() {
           <Button
             onPress={handleSubmit(onSubmit)}
             className="mt-2 bg-brand"
-            disabled={loading}
+            disabled={registerMutation.isPending}
           >
             <ButtonText className="text-white">
-              {loading ? "Cadastrando..." : "Cadastrar"}
+              {registerMutation.isPending ? "Cadastrando..." : "Cadastrar"}
             </ButtonText>
           </Button>
 
-          <Button variant="link" onPress={() => router.push("/login")}>
-            <ButtonText className="text-text-body">
-              Já tem conta? Faça login
-            </ButtonText>
-          </Button>
+          <HStack space="xs" className="justify-center items-center">
+            <Text size="sm" className="text-text-body">
+              Já tem conta?
+            </Text>
+            <Button
+              variant="link"
+              onPress={() => router.replace("/login")}
+              size="sm"
+            >
+              <ButtonText className="text-brand font-bold">
+                Faça login
+              </ButtonText>
+            </Button>
+          </HStack>
         </VStack>
       </VStack>
-    </SafeAreaView>
+    </SafeAreaWrapper>
   );
 }

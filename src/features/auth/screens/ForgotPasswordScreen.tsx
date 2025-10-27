@@ -10,14 +10,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { Mail } from "lucide-react-native";
 import { useForm } from "react-hook-form";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { resetPassword } from "@/features/auth/services/authService";
-import { useState } from "react";
-import { useToast } from "@/shared/hooks";
+import { SafeAreaWrapper } from "@/shared/components/SafeAreaWrapper";
+import { useResetPassword } from "@/features/auth/hooks";
 
 export default function ForgotPasswordScreen() {
-  const [loading, setLoading] = useState(false);
-  const toast = useToast();
+  const resetPasswordMutation = useResetPassword();
 
   const { control, handleSubmit } = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -27,29 +24,15 @@ export default function ForgotPasswordScreen() {
   });
 
   const onSubmit = async (data: ForgotPasswordFormData) => {
-    setLoading(true);
-    try {
-      const { error } = await resetPassword(data.email);
+    const result = await resetPasswordMutation.mutateAsync(data);
 
-      if (error) {
-        toast.error("Erro ao enviar email", error.message);
-        return;
-      }
-
-      toast.success(
-        "Email enviado!",
-        `Enviamos as instruções de recuperação para ${data.email}. Verifique sua caixa de entrada.`
-      );
+    if (!result.error) {
       router.replace("/login");
-    } catch (err) {
-      toast.error("Erro", "Ocorreu um erro inesperado. Tente novamente.");
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
+    <SafeAreaWrapper>
       <VStack
         className="flex-1 justify-center p-6 bg-background-primary"
         space="xl"
@@ -77,10 +60,10 @@ export default function ForgotPasswordScreen() {
           <Button
             onPress={handleSubmit(onSubmit)}
             className="mt-2 bg-brand"
-            disabled={loading}
+            disabled={resetPasswordMutation.isPending}
           >
             <ButtonText className="text-white">
-              {loading ? "Enviando..." : "Enviar Instruções"}
+              {resetPasswordMutation.isPending ? "Enviando..." : "Enviar Instruções"}
             </ButtonText>
           </Button>
 
@@ -89,6 +72,6 @@ export default function ForgotPasswordScreen() {
           </Button>
         </VStack>
       </VStack>
-    </SafeAreaView>
+    </SafeAreaWrapper>
   );
 }

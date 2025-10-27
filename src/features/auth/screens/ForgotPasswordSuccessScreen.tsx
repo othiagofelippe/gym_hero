@@ -1,58 +1,54 @@
 import { Button, ButtonText } from "@/shared/components/ui/button";
 import { Text } from "@/shared/components/ui/text";
 import { VStack } from "@/shared/components/ui/vstack";
+import { HStack } from "@/shared/components/ui/hstack";
+import { FlexMascot } from "@/shared/components/FlexMascot";
 import { router } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaWrapper } from "@/shared/components/SafeAreaWrapper";
 
 export default function ForgotPasswordSuccessScreen() {
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
-      <VStack
-        className="flex-1 justify-center p-6 bg-background-primary"
-        space="xl"
-      >
-        <VStack space="xs">
-          <Text size="3xl" bold className="text-center text-text-headline">
-            Email Enviado
-          </Text>
-          <Text size="md" className="text-center text-text-body">
-            Verifique sua caixa de entrada
-          </Text>
-        </VStack>
+    <SafeAreaWrapper className="flex-1 bg-background-primary">
+      <VStack className="flex-1 px-6 pt-8 pb-6" space="2xl">
+        <VStack className="flex-1 items-center justify-center" space="xl">
+          <FlexMascot variant="holding-water-bottle" size="large" />
 
-        <VStack space="lg" className="mt-4">
-          <VStack space="md" className="items-center">
-            <Text size="sm" className="text-center text-text-body">
-              Enviamos um link para redefinir sua senha. Clique no link para
-              criar uma nova senha.
+          <VStack space="xs" className="items-center px-4">
+            <Text size="3xl" bold className="text-center text-text-headline">
+              Email enviado! ✅
             </Text>
-
-            <Text size="xs" className="text-center text-text-span">
-              O link é válido por 24 horas
-            </Text>
-
-            <Text size="xs" className="text-center text-text-span">
-              Não recebeu o email? Verifique sua caixa de spam
+            <Text size="md" className="text-center text-text-body">
+              Verifique sua caixa de entrada.
             </Text>
           </VStack>
 
-          <Button
-            onPress={() => router.push("/login")}
-            className="mt-2 bg-brand"
-          >
-            <ButtonText className="text-white">Voltar ao Login</ButtonText>
-          </Button>
+          <VStack space="md" className="items-center px-6">
+            <Text size="sm" className="text-center text-text-body">
+              Enviamos um link para redefinir sua senha. Clique nele para criar
+              uma nova senha e garantir seu acesso.
+            </Text>
+            <Text size="xs" className="text-center text-text-span">
+              O link é válido por 24 horas — e pode estar na caixa de spam.
+            </Text>
+          </VStack>
+        </VStack>
 
-          <Button
-            variant="link"
-            onPress={() => router.push("/forgot-password")}
-          >
-            <ButtonText className="text-text-body">
-              Tentar outro email
+        <VStack space="md">
+          <Button className="bg-brand" onPress={() => router.push("/login")}>
+            <ButtonText className="text-white text-lg">
+              Voltar ao login
             </ButtonText>
           </Button>
+
+          <HStack className="justify-center">
+            <Button variant="link" onPress={() => router.push("/forgot-password")}>
+              <ButtonText className="text-text-body">
+                Tentar outro email
+              </ButtonText>
+            </Button>
+          </HStack>
         </VStack>
       </VStack>
-    </SafeAreaView>
+    </SafeAreaWrapper>
   );
 }

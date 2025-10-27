@@ -2,6 +2,7 @@ import {
   resetPasswordSchema,
   type ResetPasswordFormData,
 } from "@/features/auth/schemas/reset-password.schema";
+import { useUpdatePassword } from "@/features/auth/hooks";
 import { FormField } from "@/shared/components/form";
 import { Button, ButtonText } from "@/shared/components/ui/button";
 import { Text } from "@/shared/components/ui/text";
@@ -10,9 +11,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { Lock, LockKeyhole } from "lucide-react-native";
 import { useForm } from "react-hook-form";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaWrapper } from "@/shared/components/SafeAreaWrapper";
 
 export default function ResetPasswordScreen() {
+  const updatePasswordMutation = useUpdatePassword();
+
   const { control, handleSubmit } = useForm<ResetPasswordFormData>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
@@ -21,14 +24,18 @@ export default function ResetPasswordScreen() {
     },
   });
 
-  const onSubmit = (data: ResetPasswordFormData) => {
-    console.log("Reset password:", data);
-    // Aqui resetaria a senha e redirecionaria para login
-    router.push("/login");
+  const onSubmit = async (data: ResetPasswordFormData) => {
+    const result = await updatePasswordMutation.mutateAsync({
+      newPassword: data.password,
+    });
+
+    if (result.user) {
+      router.replace("/login");
+    }
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
+    <SafeAreaWrapper>
       <VStack
         className="flex-1 justify-center p-6 bg-background-primary"
         space="xl"
@@ -61,8 +68,14 @@ export default function ResetPasswordScreen() {
             secureTextEntry
           />
 
-          <Button onPress={handleSubmit(onSubmit)} className="mt-2 bg-brand">
-            <ButtonText className="text-white">Redefinir Senha</ButtonText>
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            className="mt-2 bg-brand"
+            disabled={updatePasswordMutation.isPending}
+          >
+            <ButtonText className="text-white">
+              {updatePasswordMutation.isPending ? "Redefinindo..." : "Redefinir Senha"}
+            </ButtonText>
           </Button>
 
           <Button variant="link" onPress={() => router.push("/login")}>
@@ -70,6 +83,6 @@ export default function ResetPasswordScreen() {
           </Button>
         </VStack>
       </VStack>
-    </SafeAreaView>
+    </SafeAreaWrapper>
   );
 }

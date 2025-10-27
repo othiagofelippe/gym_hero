@@ -1,24 +1,27 @@
+import { useResendVerificationEmail } from "@/features/auth/hooks";
 import { Button, ButtonText } from "@/shared/components/ui/button";
 import { Text } from "@/shared/components/ui/text";
 import { VStack } from "@/shared/components/ui/vstack";
-import { router } from "expo-router";
-import { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useToast } from "@/shared/hooks";
+import { router, useLocalSearchParams } from "expo-router";
+import { SafeAreaWrapper } from "@/shared/components/SafeAreaWrapper";
 
 export default function VerifyEmailScreen() {
-  const [isResending, setIsResending] = useState(false);
+  const resendMutation = useResendVerificationEmail();
+  const toast = useToast();
+  const { email } = useLocalSearchParams<{ email?: string }>();
 
-  const handleResendEmail = () => {
-    setIsResending(true);
-    console.log("Resending verification email...");
-    // Aqui reenviaria o email de verificação
-    setTimeout(() => {
-      setIsResending(false);
-    }, 2000);
+  const handleResendEmail = async () => {
+    if (!email) {
+      toast.error("Erro", "Email não encontrado");
+      return;
+    }
+
+    await resendMutation.mutateAsync({ email });
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
+    <SafeAreaWrapper>
       <VStack
         className="flex-1 justify-center p-6 bg-background-primary"
         space="xl"
@@ -48,18 +51,18 @@ export default function VerifyEmailScreen() {
             onPress={handleResendEmail}
             variant="outline"
             className="mt-2"
-            disabled={isResending}
+            disabled={resendMutation.isPending}
           >
             <ButtonText className="text-brand">
-              {isResending ? "Enviando..." : "Reenviar Email"}
+              {resendMutation.isPending ? "Enviando..." : "Reenviar Email"}
             </ButtonText>
           </Button>
 
-          <Button variant="link" onPress={() => router.push("/login")}>
+          <Button variant="link" onPress={() => router.replace("/login")}>
             <ButtonText className="text-text-body">Voltar ao login</ButtonText>
           </Button>
         </VStack>
       </VStack>
-    </SafeAreaView>
+    </SafeAreaWrapper>
   );
 }
