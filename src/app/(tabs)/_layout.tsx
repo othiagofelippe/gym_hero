@@ -2,18 +2,16 @@ import { Tabs, Redirect } from "expo-router";
 import React from "react";
 
 import { IconSymbol } from "@/shared/components/ui/icon-symbol";
-import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useAuth } from "@/features/auth/hooks";
 import { SplashScreen } from "@/shared/components/splash";
 
 export default function TabLayout() {
   const { user, loading } = useAuth();
 
-  // Mostra splash screen enquanto verifica autenticação
   if (loading) {
     return <SplashScreen />;
   }
 
-  // Se não estiver autenticado, redireciona para login
   if (!user) {
     return <Redirect href="/login" />;
   }
