@@ -1,5 +1,5 @@
-import { useAuth } from "@/features/auth/hooks/useAuth";
-import { logoutUser } from "@/features/auth/services/authService";
+import { useAuthStore } from "@/features/auth/store";
+import { useLogout } from "@/features/auth/hooks";
 import { Avatar, AvatarFallbackText } from "@/shared/components/ui/avatar";
 import { Button, ButtonText } from "@/shared/components/ui/button";
 import { HStack } from "@/shared/components/ui/hstack";
@@ -9,11 +9,12 @@ import { useConfirmDialog } from "@/shared/hooks";
 import { router } from "expo-router";
 import { ChevronRight } from "lucide-react-native";
 import { ScrollView, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaWrapper } from "@/shared/components/SafeAreaWrapper";
 
 export default function ProfileScreen() {
-  const { user } = useAuth();
+  const user = useAuthStore((state) => state.user);
   const confirm = useConfirmDialog();
+  const logoutMutation = useLogout();
 
   const handleLogout = async () => {
     const confirmed = await confirm({
@@ -25,12 +26,7 @@ export default function ProfileScreen() {
     });
 
     if (confirmed) {
-      const { error } = await logoutUser();
-      if (error) {
-        // TODO: Substituir por Toast no futuro
-        console.error("Erro ao sair:", error.message);
-        return;
-      }
+      await logoutMutation.mutateAsync();
       router.replace("/(onboarding)/welcome");
     }
   };
@@ -44,7 +40,7 @@ export default function ProfileScreen() {
   const userInitial = userName.charAt(0).toUpperCase();
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+    <SafeAreaWrapper>
       <VStack className="flex-1 bg-background-primary p-6" space="xl">
         <VStack space="xs">
           <Text size="3xl" bold className="text-text-headline">
@@ -118,6 +114,6 @@ export default function ProfileScreen() {
           </VStack>
         </ScrollView>
       </VStack>
-    </SafeAreaView>
+    </SafeAreaWrapper>
   );
 }

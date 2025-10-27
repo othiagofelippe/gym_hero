@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ScrollView, Switch } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaWrapper } from "@/shared/components/SafeAreaWrapper";
 
 import { BackButton } from "@/shared/components/BackButton";
 import { Button, ButtonText } from "@/shared/components/ui/button";
@@ -35,7 +35,7 @@ export default function PreferencesScreen() {
     LANGUAGE_OPTIONS.find((option) => option.value === language)?.label ?? "Português (Brasil)";
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+    <SafeAreaWrapper>
       <VStack className="flex-1 bg-background-primary">
         <VStack className="p-6" space="md">
           <BackButton />
@@ -208,6 +208,6 @@ export default function PreferencesScreen() {
           </VStack>
         </ActionsheetContent>
       </Actionsheet>
-    </SafeAreaView>
+    </SafeAreaWrapper>
   );
 }

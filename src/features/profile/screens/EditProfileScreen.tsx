@@ -1,4 +1,4 @@
-import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useAuth } from "@/features/auth/hooks";
 import {
   editProfileSchema,
   type EditProfileFormData,
@@ -13,7 +13,7 @@ import { Calendar, Camera, Target, User } from "lucide-react-native";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ScrollView, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaWrapper } from "@/shared/components/SafeAreaWrapper";
 
 export default function EditProfileScreen() {
   const { user } = useAuth();
@@ -38,7 +38,7 @@ export default function EditProfileScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+    <SafeAreaWrapper>
       <VStack className="flex-1 bg-background-primary p-6" space="xl">
         <VStack space="md">
           <BackButton />
@@ -110,6 +110,6 @@ export default function EditProfileScreen() {
           </VStack>
         </ScrollView>
       </VStack>
-    </SafeAreaView>
+    </SafeAreaWrapper>
   );
 }
