@@ -1,12 +1,12 @@
-import { useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import { useAuthStore } from '../store';
+import { useShallow } from 'zustand/react/shallow';
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-
-  return context;
+  return useAuthStore(
+    useShallow((state) => ({
+      user: state.user,
+      loading: state.loading,
+      isAuthenticated: state.isAuthenticated,
+    }))
+  );
 };
