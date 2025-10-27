@@ -3,6 +3,12 @@ import { ArrowLeft } from "lucide-react-native";
 import { Pressable, View } from "react-native";
 
 export function BackButton() {
+  const canGoBack = router.canGoBack();
+
+  if (!canGoBack) {
+    return null;
+  }
+
   return (
     <Pressable
       onPress={() => router.back()}
