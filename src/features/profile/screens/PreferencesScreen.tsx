@@ -17,9 +17,11 @@ import {
   ActionsheetItemText,
 } from "@/shared/components/ui/actionsheet";
 import { Check } from "lucide-react-native";
+import { useColorScheme } from "nativewind";
 
 export default function PreferencesScreen() {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const { colorScheme, setColorScheme } = useColorScheme();
+  const isDarkMode = colorScheme === "dark";
   const [pushNotifications, setPushNotifications] = useState(true);
   const [emailUpdates, setEmailUpdates] = useState(false);
   const [language, setLanguage] = useState<"pt-BR" | "es" | "en">("pt-BR");
@@ -36,15 +38,15 @@ export default function PreferencesScreen() {
 
   return (
     <SafeAreaWrapper>
-      <VStack className="flex-1 bg-background-primary">
+      <VStack className="flex-1 bg-background-primary dark:bg-dark-background-primary">
         <VStack className="p-6" space="md">
           <BackButton />
 
           <VStack space="xs">
-            <Text size="3xl" bold className="text-text-headline">
+            <Text size="3xl" bold className="text-text-headline dark:text-dark-text-headline">
               Preferências
             </Text>
-            <Text size="sm" className="text-text-body">
+            <Text size="sm" className="text-text-body dark:text-dark-text-body">
               Personalize sua experiência no Gym Hero
             </Text>
           </VStack>
@@ -53,26 +55,36 @@ export default function PreferencesScreen() {
         <ScrollView className="flex-1 px-6">
           <VStack space="xl" className="pb-6">
             <VStack space="md">
-              <Text size="sm" bold className="text-text-span uppercase">
+              <Text
+                size="sm"
+                bold
+                className="text-text-span dark:text-dark-text-span uppercase"
+              >
                 Aparência
               </Text>
 
               <VStack
                 space="sm"
-                className="p-4 rounded-xl bg-background-secondary border border-border-primary"
+                className="p-4 rounded-xl bg-background-secondary dark:bg-dark-background-secondary border border-border-primary dark:border-dark-border-primary"
               >
                 <HStack className="justify-between items-center">
                   <VStack space="xs">
-                    <Text size="md" bold className="text-text-headline">
+                    <Text
+                      size="md"
+                      bold
+                      className="text-text-headline dark:text-dark-text-headline"
+                    >
                       Modo Escuro
                     </Text>
-                    <Text size="sm" className="text-text-span">
+                    <Text size="sm" className="text-text-span dark:text-dark-text-span">
                       Ajuste o tema da interface
                     </Text>
                   </VStack>
                   <Switch
                     value={isDarkMode}
-                    onValueChange={setIsDarkMode}
+                    onValueChange={(value) =>
+                      setColorScheme(value ? "dark" : "light")
+                    }
                     trackColor={{ false: "#3f3f46", true: "rgb(249, 115, 22)" }}
                     thumbColor={isDarkMode ? "#fff" : "#f4f4f5"}
                   />
@@ -81,20 +93,28 @@ export default function PreferencesScreen() {
             </VStack>
 
             <VStack space="md">
-              <Text size="sm" bold className="text-text-span uppercase">
+              <Text
+                size="sm"
+                bold
+                className="text-text-span dark:text-dark-text-span uppercase"
+              >
                 Notificações
               </Text>
 
               <VStack
                 space="sm"
-                className="p-4 rounded-xl bg-background-secondary border border-border-primary"
+                className="p-4 rounded-xl bg-background-secondary dark:bg-dark-background-secondary border border-border-primary dark:border-dark-border-primary"
               >
                 <HStack className="justify-between items-center">
                   <VStack space="xs">
-                    <Text size="md" bold className="text-text-headline">
+                    <Text
+                      size="md"
+                      bold
+                      className="text-text-headline dark:text-dark-text-headline"
+                    >
                       Push notifications
                     </Text>
-                    <Text size="sm" className="text-text-span">
+                    <Text size="sm" className="text-text-span dark:text-dark-text-span">
                       Avisos sobre treinos, metas e desafios
                     </Text>
                   </VStack>
@@ -109,14 +129,18 @@ export default function PreferencesScreen() {
 
               <VStack
                 space="sm"
-                className="p-4 rounded-xl bg-background-secondary border border-border-primary"
+                className="p-4 rounded-xl bg-background-secondary dark:bg-dark-background-secondary border border-border-primary dark:border-dark-border-primary"
               >
                 <HStack className="justify-between items-center">
                   <VStack space="xs">
-                    <Text size="md" bold className="text-text-headline">
+                    <Text
+                      size="md"
+                      bold
+                      className="text-text-headline dark:text-dark-text-headline"
+                    >
                       Emails semanais
                     </Text>
-                    <Text size="sm" className="text-text-span">
+                    <Text size="sm" className="text-text-span dark:text-dark-text-span">
                       Resumo de progresso e sugestões de treino
                     </Text>
                   </VStack>
@@ -131,19 +155,27 @@ export default function PreferencesScreen() {
             </VStack>
 
             <VStack space="md">
-              <Text size="sm" bold className="text-text-span uppercase">
+              <Text
+                size="sm"
+                bold
+                className="text-text-span dark:text-dark-text-span uppercase"
+              >
                 Idioma e região
               </Text>
 
               <VStack
                 space="sm"
-                className="p-4 rounded-xl bg-background-secondary border border-border-primary"
+                className="p-4 rounded-xl bg-background-secondary dark:bg-dark-background-secondary border border-border-primary dark:border-dark-border-primary"
               >
                 <VStack space="xs">
-                  <Text size="md" bold className="text-text-headline">
+                  <Text
+                    size="md"
+                    bold
+                    className="text-text-headline dark:text-dark-text-headline"
+                  >
                     Idioma do aplicativo
                   </Text>
-                  <Text size="sm" className="text-text-span">
+                  <Text size="sm" className="text-text-span dark:text-dark-text-span">
                     {currentLanguageLabel}
                   </Text>
                 </VStack>
@@ -151,10 +183,10 @@ export default function PreferencesScreen() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-border-primary"
+                  className="border-border-primary dark:border-dark-border-primary"
                   onPress={() => setShowLanguageSheet(true)}
                 >
-                  <ButtonText className="text-text-headline text-base">
+                  <ButtonText className="text-text-headline dark:text-dark-text-headline text-base">
                     Alterar idioma
                   </ButtonText>
                 </Button>
@@ -166,17 +198,21 @@ export default function PreferencesScreen() {
 
       <Actionsheet isOpen={showLanguageSheet} onClose={() => setShowLanguageSheet(false)}>
         <ActionsheetBackdrop />
-        <ActionsheetContent className="bg-background-primary">
+        <ActionsheetContent className="bg-background-primary dark:bg-dark-background-primary">
           <ActionsheetDragIndicatorWrapper>
-            <ActionsheetDragIndicator className="bg-border-primary" />
+            <ActionsheetDragIndicator className="bg-border-primary dark:bg-dark-border-primary" />
           </ActionsheetDragIndicatorWrapper>
 
           <VStack className="w-full p-6" space="lg">
             <VStack space="xs">
-              <Text size="2xl" bold className="text-text-headline">
+              <Text
+                size="2xl"
+                bold
+                className="text-text-headline dark:text-dark-text-headline"
+              >
                 Selecionar idioma
               </Text>
-              <Text size="sm" className="text-text-span">
+              <Text size="sm" className="text-text-span dark:text-dark-text-span">
                 Escolha o idioma padrão do aplicativo
               </Text>
             </VStack>
@@ -191,10 +227,10 @@ export default function PreferencesScreen() {
                       setLanguage(option.value);
                       setShowLanguageSheet(false);
                     }}
-                    className="px-3 py-4 rounded-xl bg-background-secondary border border-border-primary"
+                    className="px-3 py-4 rounded-xl bg-background-secondary dark:bg-dark-background-secondary border border-border-primary dark:border-dark-border-primary"
                   >
                     <HStack className="items-center justify-between">
-                      <ActionsheetItemText className="text-text-headline text-base">
+                      <ActionsheetItemText className="text-text-headline dark:text-dark-text-headline text-base">
                         {option.label}
                       </ActionsheetItemText>
                       {isSelected && (

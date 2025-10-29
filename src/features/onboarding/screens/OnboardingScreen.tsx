@@ -53,7 +53,7 @@ export default function OnboardingScreen() {
 
   return (
     <SafeAreaWrapper>
-      <VStack className="flex-1 bg-background-primary">
+      <VStack className="flex-1 bg-background-primary dark:bg-dark-background-primary">
         <Animated.View
           style={{
             flex: 1,
@@ -69,12 +69,12 @@ export default function OnboardingScreen() {
             </View>
 
             <VStack space="md" className="items-center">
-              <Text size="3xl" bold className="text-text-headline text-center">
+              <Text size="3xl" bold className="text-text-headline dark:text-dark-text-headline text-center">
                 {step.title}
               </Text>
               <Text
                 size="lg"
-                className="text-text-body text-center leading-relaxed"
+                className="text-text-body dark:text-dark-text-body text-center leading-relaxed"
               >
                 {step.description}
               </Text>
@@ -107,7 +107,7 @@ export default function OnboardingScreen() {
               </ButtonText>
             </Button>
 
-            <Button onPress={handleNext} className="bg-brand flex-1" size="xl">
+            <Button onPress={handleNext} className="bg-accent-brand flex-1" size="xl">
               <ButtonText className="text-white text-lg font-bold">
                 {isLastStep ? "Começar" : "Próximo"}
               </ButtonText>

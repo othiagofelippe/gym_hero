@@ -23,26 +23,26 @@ export default function VerifyEmailScreen() {
   return (
     <SafeAreaWrapper>
       <VStack
-        className="flex-1 justify-center p-6 bg-background-primary"
+        className="flex-1 justify-center p-6 bg-background-primary dark:bg-dark-background-primary"
         space="xl"
       >
         <VStack space="xs">
-          <Text size="3xl" bold className="text-center text-text-headline">
+          <Text size="3xl" bold className="text-center text-text-headline dark:text-dark-text-headline">
             Verifique seu Email
           </Text>
-          <Text size="md" className="text-center text-text-body">
+          <Text size="md" className="text-center text-text-body dark:text-dark-text-body">
             Enviamos um link de verificação para seu email
           </Text>
         </VStack>
 
         <VStack space="lg" className="mt-4">
           <VStack space="md" className="items-center">
-            <Text size="sm" className="text-center text-text-body">
+            <Text size="sm" className="text-center text-text-body dark:text-dark-text-body">
               Clique no link enviado para verificar sua conta e começar a usar o
               Gym Hero
             </Text>
 
-            <Text size="xs" className="text-center text-text-span">
+            <Text size="xs" className="text-center text-text-span dark:text-dark-text-span">
               Não recebeu o email? Verifique sua caixa de spam
             </Text>
           </VStack>
@@ -53,13 +53,13 @@ export default function VerifyEmailScreen() {
             className="mt-2"
             disabled={resendMutation.isPending}
           >
-            <ButtonText className="text-brand">
+            <ButtonText className="text-accent-brand">
               {resendMutation.isPending ? "Enviando..." : "Reenviar Email"}
             </ButtonText>
           </Button>
 
           <Button variant="link" onPress={() => router.replace("/login")}>
-            <ButtonText className="text-text-body">Voltar ao login</ButtonText>
+            <ButtonText className="text-text-body dark:text-dark-text-body">Voltar ao login</ButtonText>
           </Button>
         </VStack>
       </VStack>

@@ -12,8 +12,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Calendar, Camera, Target, User } from "lucide-react-native";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ScrollView, View } from "react-native";
+import { View } from "react-native";
 import { SafeAreaWrapper } from "@/shared/components/SafeAreaWrapper";
+import { KeyboardAwareWrapper } from "@/shared/components/KeyboardAwareWrapper";
 
 export default function EditProfileScreen() {
   const { user } = useAuth();
@@ -39,31 +40,31 @@ export default function EditProfileScreen() {
 
   return (
     <SafeAreaWrapper>
-      <VStack className="flex-1 bg-background-primary p-6" space="xl">
+      <VStack className="flex-1 bg-background-primary dark:bg-dark-background-primary p-6" space="xl">
         <VStack space="md">
           <BackButton />
           <VStack space="xs">
-            <Text size="3xl" bold className="text-text-headline">
+            <Text size="3xl" bold className="text-text-headline dark:text-dark-text-headline">
               Editar Perfil
             </Text>
-            <Text size="md" className="text-text-body">
+            <Text size="md" className="text-text-body dark:text-dark-text-body">
               Atualize suas informações pessoais
             </Text>
           </VStack>
         </VStack>
 
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <KeyboardAwareWrapper>
           <VStack space="xl" className="pb-6">
             <VStack space="lg" className="items-center">
-              <View className="w-28 h-28 rounded-full bg-brand/10 border-2 border-brand items-center justify-center">
-                <Text size="4xl" bold className="text-brand">
+              <View className="w-28 h-28 rounded-full bg-accent-brand/10 border-2 border-accent-brand items-center justify-center">
+                <Text size="4xl" bold className="text-accent-brand">
                   {name?.charAt(0)?.toUpperCase() || "U"}
                 </Text>
               </View>
 
               <Button variant="link" onPress={handleChangeAvatar}>
                 <Camera size={18} color="rgb(249, 115, 22)" />
-                <ButtonText className="text-brand ml-2">
+                <ButtonText className="text-accent-brand ml-2">
                   Alterar foto
                 </ButtonText>
               </Button>
@@ -99,7 +100,7 @@ export default function EditProfileScreen() {
 
             <Button
               onPress={handleSubmit(onSubmit)}
-              className="bg-brand mt-4"
+              className="bg-accent-brand mt-4"
               size="xl"
               disabled={loading}
             >
@@ -108,7 +109,7 @@ export default function EditProfileScreen() {
               </ButtonText>
             </Button>
           </VStack>
-        </ScrollView>
+        </KeyboardAwareWrapper>
       </VStack>
     </SafeAreaWrapper>
   );
