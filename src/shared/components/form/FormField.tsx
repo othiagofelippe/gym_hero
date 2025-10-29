@@ -23,19 +23,22 @@ export function FormField<T extends FieldValues>({
       name={name}
       render={({ field, fieldState: { error } }) => (
         <VStack space="sm">
-          <Text size="sm" bold className="text-text-heading">
+          <Text size="sm" bold className="text-text-heading dark:text-dark-text-heading">
             {label}
           </Text>
           <Input
-            className={
+            className={`bg-background-secondary dark:bg-dark-background-secondary ${
               error
                 ? "border-red"
-                : "border-border-primary bg-background-secondary"
-            }
+                : "border-border-primary dark:border-dark-border-primary"
+            }`}
           >
             {icon && (
               <InputSlot className="pl-3">
-                <InputIcon as={icon} className="text-text-span" />
+                <InputIcon
+                  as={icon}
+                  className="text-text-span dark:text-dark-text-span"
+                />
               </InputSlot>
             )}
             <InputField
@@ -44,7 +47,7 @@ export function FormField<T extends FieldValues>({
               onChangeText={field.onChange}
               onBlur={field.onBlur}
               secureTextEntry={secureTextEntry && !showPassword}
-              className="text-text-body"
+              className="text-text-body dark:text-dark-text-body"
               {...inputProps}
             />
             {secureTextEntry && (
@@ -54,7 +57,7 @@ export function FormField<T extends FieldValues>({
               >
                 <InputIcon
                   as={showPassword ? Eye : EyeOff}
-                  className="text-text-span"
+                  className="text-text-span dark:text-dark-text-span"
                 />
               </InputSlot>
             )}

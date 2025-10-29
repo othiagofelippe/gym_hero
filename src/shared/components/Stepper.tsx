@@ -2,6 +2,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Text } from "@/shared/components/ui/text";
 import { HStack } from "@/shared/components/ui/hstack";
 import { Minus, Plus } from "lucide-react-native";
+import { useColorScheme } from "nativewind";
 
 interface StepperProps {
   value: number;
@@ -20,6 +21,11 @@ export function Stepper({
   step = 1,
   suffix = "",
 }: StepperProps) {
+  const { colorScheme } = useColorScheme();
+  const isDark = colorScheme === "dark";
+  const disabledColor = isDark ? "#7C7C8A" : "rgb(124, 124, 138)";
+  const activeColor = "#F97316";
+
   const handleDecrement = () => {
     if (value > min) {
       onChange(value - step);
@@ -39,12 +45,16 @@ export function Stepper({
         disabled={value <= min}
         size="sm"
         variant="outline"
-        className="w-10 h-10 rounded-lg border-border-primary"
+        className="w-10 h-10 rounded-lg border-border-primary dark:border-dark-border-primary"
       >
-        <Minus size={16} color={value <= min ? "rgb(124, 124, 138)" : "rgb(249, 115, 22)"} />
+        <Minus size={16} color={value <= min ? disabledColor : activeColor} />
       </Button>
 
-      <Text size="xl" bold className="text-text-headline min-w-[60px] text-center">
+      <Text
+        size="xl"
+        bold
+        className="text-text-headline dark:text-dark-text-headline min-w-[60px] text-center"
+      >
         {value}{suffix}
       </Text>
 
@@ -53,9 +63,9 @@ export function Stepper({
         disabled={value >= max}
         size="sm"
         variant="outline"
-        className="w-10 h-10 rounded-lg border-border-primary"
+        className="w-10 h-10 rounded-lg border-border-primary dark:border-dark-border-primary"
       >
-        <Plus size={16} color={value >= max ? "rgb(124, 124, 138)" : "rgb(249, 115, 22)"} />
+        <Plus size={16} color={value >= max ? disabledColor : activeColor} />
       </Button>
     </HStack>
   );

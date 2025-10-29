@@ -1,21 +1,21 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
 import {
   AlertDialog,
   AlertDialogBackdrop,
-  AlertDialogContent,
-  AlertDialogHeader,
   AlertDialogBody,
+  AlertDialogContent,
   AlertDialogFooter,
-} from '@/shared/components/ui/alert-dialog';
-import { Button, ButtonText } from '@/shared/components/ui/button';
-import { Text } from '@/shared/components/ui/text';
+  AlertDialogHeader,
+} from "@/shared/components/ui/alert-dialog";
+import { Button, ButtonText } from "@/shared/components/ui/button";
+import { Text } from "@/shared/components/ui/text";
+import React, { createContext, useCallback, useContext, useState } from "react";
 
 interface ConfirmDialogOptions {
   title: string;
   message: string;
   confirmText?: string;
   cancelText?: string;
-  confirmAction?: 'default' | 'positive' | 'negative';
+  confirmAction?: "default" | "positive" | "negative";
 }
 
 interface ConfirmDialogContextValue {
@@ -37,14 +37,17 @@ export function ConfirmDialogProvider({
     null
   );
 
-  const confirm = useCallback((opts: ConfirmDialogOptions): Promise<boolean> => {
-    setOptions(opts);
-    setIsOpen(true);
+  const confirm = useCallback(
+    (opts: ConfirmDialogOptions): Promise<boolean> => {
+      setOptions(opts);
+      setIsOpen(true);
 
-    return new Promise<boolean>((resolve) => {
-      setResolver(() => resolve);
-    });
-  }, []);
+      return new Promise<boolean>((resolve) => {
+        setResolver(() => resolve);
+      });
+    },
+    []
+  );
 
   const handleConfirm = () => {
     resolver?.(true);
@@ -65,25 +68,32 @@ export function ConfirmDialogProvider({
   };
 
   const getConfirmButtonAction = () => {
-    const action = options?.confirmAction || 'default';
-    if (action === 'negative') return 'negative';
-    if (action === 'positive') return 'positive';
-    return 'primary';
+    const action = options?.confirmAction || "default";
+    if (action === "negative") return "negative";
+    if (action === "positive") return "positive";
+    return "primary";
   };
 
   return (
     <ConfirmDialogContext.Provider value={{ confirm }}>
       {children}
       <AlertDialog isOpen={isOpen} onClose={handleClose}>
-        <AlertDialogBackdrop className="bg-black/60" />
-        <AlertDialogContent className="bg-background-secondary border-2 border-border-primary rounded-2xl p-6 mx-4">
+        <AlertDialogBackdrop className="bg-black/60 dark:bg-black/70" />
+        <AlertDialogContent className="bg-background-secondary dark:bg-dark-background-secondary border-2 border-border-primary dark:border-dark-border-primary rounded-2xl p-6 mx-4">
           <AlertDialogHeader className="mb-3">
-            <Text size="xl" bold className="text-text-headline">
+            <Text
+              size="xl"
+              bold
+              className="text-text-headline dark:text-dark-text-headline"
+            >
               {options?.title}
             </Text>
           </AlertDialogHeader>
           <AlertDialogBody className="mb-6">
-            <Text size="md" className="text-text-body leading-6">
+            <Text
+              size="md"
+              className="text-text-body dark:text-dark-text-body leading-6"
+            >
               {options?.message}
             </Text>
           </AlertDialogBody>
@@ -92,9 +102,11 @@ export function ConfirmDialogProvider({
               variant="outline"
               action="secondary"
               onPress={handleCancel}
-              className="flex-1"
+              className="flex-1 dark:border-border-primary border-dark-border-primary"
             >
-              <ButtonText>{options?.cancelText || 'Cancelar'}</ButtonText>
+              <ButtonText className="text-text-heading dark:text-dark-text-heading">
+                {options?.cancelText || "Cancelar"}
+              </ButtonText>
             </Button>
             <Button
               variant="solid"
@@ -102,7 +114,9 @@ export function ConfirmDialogProvider({
               onPress={handleConfirm}
               className="flex-1"
             >
-              <ButtonText>{options?.confirmText || 'Confirmar'}</ButtonText>
+              <ButtonText className="text-text-heading dark:text-dark-text-heading">
+                {options?.confirmText || "Confirmar"}
+              </ButtonText>
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -116,7 +130,7 @@ export function useConfirmDialog() {
 
   if (!context) {
     throw new Error(
-      'useConfirmDialog must be used within a ConfirmDialogProvider'
+      "useConfirmDialog must be used within a ConfirmDialogProvider"
     );
   }
 

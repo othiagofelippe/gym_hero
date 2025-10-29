@@ -18,7 +18,7 @@ interface ShowToastOptions {
 const toastStyles = {
   success: "bg-[#059669] border-[#047857]",
   error: "bg-red border-red-dark",
-  warning: "bg-brand border-brand-dark",
+  warning: "bg-accent-brand border-accent-brand-dark",
   info: "bg-blue border-blue-dark",
 };
 

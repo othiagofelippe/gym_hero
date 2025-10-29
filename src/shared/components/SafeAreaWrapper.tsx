@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { View, ViewStyle } from "react-native";
-import { useSafeAreaInsets, Edge } from "react-native-safe-area-context";
+import { Edge, useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface SafeAreaWrapperProps {
   children: ReactNode;
@@ -12,7 +12,7 @@ interface SafeAreaWrapperProps {
 
 export function SafeAreaWrapper({
   children,
-  edges = ["bottom"],
+  edges = ["top", "bottom"],
   style,
   className,
   flex = true,
@@ -27,11 +27,13 @@ export function SafeAreaWrapper({
   };
 
   return (
-    <View
-      style={[flex && { flex: 1 }, safeAreaStyle, style]}
-      className={className}
-    >
-      {children}
+    <View className="flex-1 bg-background-primary dark:bg-dark-background-primary">
+      <View
+        style={[flex && { flex: 1 }, safeAreaStyle, style]}
+        className={className}
+      >
+        {children}
+      </View>
     </View>
   );
 }

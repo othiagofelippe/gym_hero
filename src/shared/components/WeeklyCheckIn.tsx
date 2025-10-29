@@ -20,7 +20,7 @@ const DAYS = [
 export default function WeeklyCheckIn({ checkedDays = [] }: WeeklyCheckInProps) {
   return (
     <VStack space="md" className="p-4">
-      <Text size="lg" bold className="text-text-headline">
+      <Text size="lg" bold className="text-text-headline dark:text-dark-text-headline">
         Ofensiva
       </Text>
 
@@ -36,7 +36,7 @@ export default function WeeklyCheckIn({ checkedDays = [] }: WeeklyCheckInProps) 
             >
               <Text
                 size="sm"
-                className={isChecked ? 'text-brand font-bold' : 'text-text-span'}
+                className={isChecked ? 'text-accent-brand font-bold' : 'text-text-span'}
               >
                 {day.label}
               </Text>
