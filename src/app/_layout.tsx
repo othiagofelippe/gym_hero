@@ -1,16 +1,19 @@
+import * as Linking from "expo-linking";
 import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import "react-native-reanimated";
-import * as Linking from "expo-linking";
 import { useEffect } from "react";
+import "react-native-reanimated";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
+import { setSessionFromUrl } from "@/features/auth/services/authService";
+import { useAuthStore } from "@/features/auth/store";
+import { queryClient } from "@/lib/react-query";
 import { GluestackUIProvider } from "@/shared/components/ui/gluestack-ui-provider";
 import { ConfirmDialogProvider } from "@/shared/hooks";
-import { setSessionFromUrl } from "@/features/auth/services/authService";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@/lib/react-query";
 import "../global.css";
+import "@/i18n/config"; // Inicializa o i18n
 
 export const unstable_settings = {
   anchor: "(auth)",
@@ -18,6 +21,11 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const router = useRouter();
+  const initialize = useAuthStore((state) => state.initialize);
+
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
 
   useEffect(() => {
     Linking.getInitialURL().then((url) => {
@@ -39,21 +47,20 @@ export default function RootLayout() {
     console.log("🔗 Deep link detectado:", url);
 
     if (url.includes("verify-email")) {
-      await handleAuthLink(url, "verificação de email", "/email-verified" as any);
-    }
-    else if (url.includes("magic-link")) {
+      await handleAuthLink(
+        url,
+        "verificação de email",
+        "/email-verified" as any
+      );
+    } else if (url.includes("magic-link")) {
       await handleAuthLink(url, "magic link", "/" as any);
-    }
-    else if (url.includes("invite")) {
+    } else if (url.includes("invite")) {
       await handleAuthLink(url, "convite", "/" as any);
-    }
-    else if (url.includes("change-email")) {
+    } else if (url.includes("change-email")) {
       await handleAuthLink(url, "mudança de email", "/" as any);
-    }
-    else if (url.includes("reset-password")) {
+    } else if (url.includes("reset-password")) {
       await handlePasswordReset(url);
-    }
-    else {
+    } else {
       console.log("⚠️ Tipo de deep link não reconhecido");
     }
   };
@@ -99,22 +106,20 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
-        <GluestackUIProvider mode="dark">
-          <ConfirmDialogProvider>
-            <Stack screenOptions={{ headerShown: false, animation: "fade" }}>
-              <Stack.Screen name="index" options={{ animation: "none" }} />
-              <Stack.Screen name="(onboarding)" />
-              <Stack.Screen name="(auth)" />
-              <Stack.Screen name="(tabs)" />
-              <Stack.Screen name="(profile)" />
-            </Stack>
-            <StatusBar
-              style="light"
-              backgroundColor="rgb(18, 18, 20)"
-              translucent={false}
-            />
-          </ConfirmDialogProvider>
-        </GluestackUIProvider>
+        <KeyboardProvider>
+          <GluestackUIProvider mode="dark">
+            <ConfirmDialogProvider>
+              <Stack screenOptions={{ headerShown: false, animation: "fade" }}>
+                <Stack.Screen name="index" options={{ animation: "none" }} />
+                <Stack.Screen name="(onboarding)" />
+                <Stack.Screen name="(auth)" />
+                <Stack.Screen name="(tabs)" />
+                <Stack.Screen name="(profile)" />
+              </Stack>
+              <StatusBar style="dark" />
+            </ConfirmDialogProvider>
+          </GluestackUIProvider>
+        </KeyboardProvider>
       </SafeAreaProvider>
     </QueryClientProvider>
   );

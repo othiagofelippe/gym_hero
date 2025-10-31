@@ -12,6 +12,7 @@ export default function WorkoutLayout() {
       <Stack.Screen name="[muscleGroup]" />
       <Stack.Screen name="configure" />
       <Stack.Screen name="name" />
+      <Stack.Screen name="details/[id]" />
     </Stack>
   );
 }
