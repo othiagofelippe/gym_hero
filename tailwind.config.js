@@ -1,49 +1,50 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: process.env.DARK_MODE ? process.env.DARK_MODE : "class",
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  darkMode: "class",
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
-  important: "html",
-  safelist: [
-    {
-      pattern:
-        /(bg|border|text)-(background|text|brand|red|blue|border)-(primary|secondary|tertiary|headline|heading|body|span|dark|light)/,
-    },
-  ],
   theme: {
-    colors: {
-      transparent: "transparent",
-      current: "currentColor",
-      white: "#FFFFFF",
-      black: "#000000",
-      background: {
-        primary: "rgb(var(--background-primary) / <alpha-value>)",
-        secondary: "rgb(var(--background-secondary) / <alpha-value>)",
-        tertiary: "rgb(var(--background-tertiary) / <alpha-value>)",
-      },
-      text: {
-        headline: "rgb(var(--text-headline) / <alpha-value>)",
-        heading: "rgb(var(--text-heading) / <alpha-value>)",
-        body: "rgb(var(--text-body) / <alpha-value>)",
-        span: "rgb(var(--text-span) / <alpha-value>)",
-      },
-      brand: {
-        DEFAULT: "rgb(var(--accent-brand) / <alpha-value>)",
-        dark: "rgb(var(--accent-brand-dark) / <alpha-value>)",
-        light: "rgb(var(--accent-brand-light) / <alpha-value>)",
-      },
-      red: {
-        DEFAULT: "rgb(var(--accent-red) / <alpha-value>)",
-        dark: "rgb(var(--accent-red-dark) / <alpha-value>)",
-      },
-      blue: {
-        DEFAULT: "rgb(var(--accent-blue) / <alpha-value>)",
-        dark: "rgb(var(--accent-blue-dark) / <alpha-value>)",
-      },
-      border: {
-        primary: "rgb(var(--border-primary) / <alpha-value>)",
+    extend: {
+      colors: {
+        background: {
+          primary: "#FFFFFF",
+          secondary: "#F5F5F5",
+          tertiary: "#E5E5E5",
+        },
+        text: {
+          headline: "#121214",
+          heading: "#202024",
+          body: "#29292E",
+          span: "#7C7C8A",
+        },
+        accent: {
+          brand: "#F97316",
+          "brand-dark": "#C2410C",
+          "brand-light": "#FB923C",
+          red: "#F75A68",
+          "red-dark": "#AA2834",
+          blue: "#5A86F7",
+          "blue-dark": "#284DAA",
+        },
+        border: {
+          primary: "#E5E5E5",
+        },
+        dark: {
+          background: {
+            primary: "#121214",
+            secondary: "#202024",
+            tertiary: "#29292E",
+          },
+          text: {
+            headline: "#FFFFFF",
+            heading: "#E1E1E6",
+            body: "#C4C4CC",
+            span: "#7C7C8A",
+          },
+          border: {
+            primary: "#3D3D3D",
+          },
+        },
       },
     },
   },
