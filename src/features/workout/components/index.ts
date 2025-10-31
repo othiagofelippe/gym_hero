@@ -12,3 +12,6 @@ export type { ExerciseSelectableCardProps } from "./ExerciseSelectableCard";
 
 export { ExerciseConfigCard } from "./ExerciseConfigCard";
 export type { ExerciseConfigCardProps } from "./ExerciseConfigCard";
+
+export { WorkoutExerciseSummaryCard } from "./WorkoutExerciseSummaryCard";
+export type { WorkoutExerciseSummaryCardProps } from "./WorkoutExerciseSummaryCard";

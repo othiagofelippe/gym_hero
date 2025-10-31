@@ -1,4 +1,4 @@
-import type { ExerciseConfig } from "../types";
+import type { ExerciseConfig } from "@/features/workout/types";
 
 export interface ExerciseConfigCardProps {
   exercise: ExerciseConfig;

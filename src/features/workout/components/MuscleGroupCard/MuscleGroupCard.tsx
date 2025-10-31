@@ -1,7 +1,7 @@
 import { Text } from "@/shared/components/ui/text";
 import { VStack } from "@/shared/components/ui/vstack";
 import { TouchableOpacity, Image } from "react-native";
-import type { MuscleGroupCardProps } from "./MuscleGroupCard.types";
+import type { MuscleGroupCardProps } from ".";
 
 export function MuscleGroupCard({
   id,
@@ -22,8 +22,8 @@ export function MuscleGroupCard({
       <VStack
         className={`h-full rounded-2xl items-center justify-center ${
           isSelected
-            ? "border-4 border-brand bg-brand/10"
-            : "border-2 border-border-primary bg-background-secondary"
+            ? "border-4 border-accent-brand bg-accent-brand/10 dark:bg-accent-brand/20"
+            : "border-2 border-border-primary dark:border-dark-border-primary bg-background-secondary dark:bg-dark-background-secondary"
         }`}
         space="sm"
       >
@@ -39,7 +39,7 @@ export function MuscleGroupCard({
           size="md"
           bold
           className={`text-center px-2 ${
-            isSelected ? "text-brand" : "text-text-headline"
+            isSelected ? "text-accent-brand" : "text-text-headline dark:text-dark-text-headline"
           }`}
         >
           {name}
